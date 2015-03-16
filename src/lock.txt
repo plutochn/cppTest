@@ -1,0 +1,35 @@
+
+#define SLEEP_S(x) Sleep(x*1000)
+
+ 
+atomic_value<int> g_ticket_num(10);
+
+unsigned int __stdcall proc_add()
+{
+
+	while(1)
+	{
+		SLEEP_S(1);
+		int tick_num = g_ticket_num.get_value();
+		cout<<"add: "<<tick_num<<endl;
+
+		tick_num++;
+        g_ticket_num.set_value(tick_num);
+	}
+	return 0;
+}
+
+unsigned int __stdcall proc_sub()
+{
+
+	while(1)
+	{
+		SLEEP_S(2);
+		int tick_num = g_ticket_num.get_value();
+		cout<<"sub: "<<tick_num<<endl;
+
+		tick_num--;
+		g_ticket_num.set_value(tick_num);
+	}
+	return 0;
+}

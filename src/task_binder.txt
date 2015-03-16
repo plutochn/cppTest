@@ -1,0 +1,90 @@
+// cppTest.cpp : 定义控制台应用程序的入口点。
+//
+
+#include "stdafx.h"
+
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+using namespace zz;
+
+void SayHello()
+{
+	cout<<"This is a test from task binder !"<<endl;
+}
+
+int SayHello_ret()
+{
+	cout<<"This is a test from task binder with ret value !"<<endl;
+	return 1;
+}
+
+int PrintStr_ret(string & str)
+{
+	cout<<"[ret]str is"<<str<<endl;
+	return 1;
+}
+
+void PrintStr(string & str)
+{
+	cout<<"str is"<<str<<endl;
+	 
+}
+
+class phone_t
+{
+public:
+
+	void call(string&  phonenum)
+	{
+		cout<<"call:"<<phonenum<<endl;
+	}
+
+	void send_sm()
+	{
+		cout<<"send message to:"<<"10086"<<endl;
+		 
+	}
+};
+
+void test()
+{
+
+	task_t t_ = task_binder::bind(SayHello_ret);
+
+	t_.exe();
+
+	string str = "zk";
+	task_t t1_ = task_binder::bind(PrintStr,str);
+
+	t1_.exe();
+
+	task_t t2_(t1_);
+
+	t2_.exe();
+
+	t2_ = t_;
+
+	t2_.exe();
+
+	phone_t ph;
+
+	string strnum = "13437265183";
+	task_t t3_ = task_binder::bind(&(phone_t::call),strnum,&ph);
+
+	t3_.exe();
+}
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+	
+ 
+test();
+ _CrtDumpMemoryLeaks();
+	system("pause");
+
+
+	return 0;
+}
+

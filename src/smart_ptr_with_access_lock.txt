@@ -1,0 +1,69 @@
+// cppTest.cpp : 定义控制台应用程序的入口点。
+//
+
+#include "stdafx.h"
+
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+using namespace zz;
+
+
+#define SLEEP_S(x) Sleep(x*1000)
+
+
+ 
+shared_ptr_t<int> sp_(new int(10));
+bool bexit = false;
+
+unsigned int __stdcall proc_add()
+{
+
+	while(!bexit)
+	{
+		SLEEP_S(1);
+		int n = sp_+1;
+		cout<<"[add] tick_num: "<<n<<endl;	
+		 
+	}
+	return 0;
+}
+
+unsigned int __stdcall proc_sub()
+{
+
+	while(!bexit)
+	{
+		SLEEP_S(2);
+		int n = sp_-1;
+		cout<<"[sub] tick_num: "<<n<<endl;	
+	}
+	return 0;
+}
+
+void test()
+{
+	 
+	CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)proc_sub,NULL,0,NULL);
+	CreateThread(NULL,0,(LPTHREAD_START_ROUTINE)proc_add,NULL,0,NULL); 
+    Sleep(5000);
+    bexit = true;
+}
+
+void dump(void)
+{
+	 _CrtDumpMemoryLeaks();
+}
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+	
+atexit(dump);
+test();
+	system("pause");
+
+
+	return 0;
+}
+

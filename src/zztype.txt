@@ -1,0 +1,63 @@
+
+template<typename T>
+class type_helper_t
+{
+public:
+	type_helper_t():
+	  m_type_id(0)
+	{
+		string func_name = __FUNCTION__;
+
+		int start = func_name.find(' ') + 1;
+		int end	  = func_name.find(">",0);
+
+		m_type_name = func_name.substr(start, end-start);
+	}
+
+	const string & get_type_name() const
+	{
+		return m_type_name;
+	}
+private:
+	int		m_type_id;
+	string	m_type_name;
+};
+
+namespace rpc
+{
+	class rpc_service_t : public type_helper_t<rpc_service_t>
+	{
+
+	};
+};
+
+class p1
+{
+public:
+	struct p2
+	{
+		struct p3 : public type_helper_t<p3>
+		{
+
+		};
+	};
+};
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+	rpc::rpc_service_t rpc_client;
+	cout<<rpc_client.get_type_name().c_str()<<endl;
+	//rpc_client.get_type_name();
+	
+	p1 p1_;
+	p1::p2 p2_;
+	p1::p2::p3 p3_;
+	
+	//cout<<p1_.get_type_name().c_str()<<endl;
+	//cout<<p2_.get_type_name().c_str()<<endl;
+	cout<<p3_.get_type_name().c_str()<<endl;
+
+	char ch;
+	cin>>ch;
+	return 0;
+}

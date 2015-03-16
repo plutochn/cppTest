@@ -1,0 +1,50 @@
+
+class winsock_lib_t : public singleton_t<winsock_lib_t>
+{
+public:
+	winsock_lib_t()
+	{
+		cout<<"winsock_lib_t construc"<<endl;
+	}
+
+	~winsock_lib_t()
+	{
+		cout<<"winsock_lib_t destruct"<<endl;
+	}
+
+	void call_from_ref()
+	{
+		cout<<"winsock_lib_t call_from_ref"<<endl;
+	}
+
+	void call_from_ptr()
+	{
+		cout<<"winsock_lib_t call_from_ptr"<<endl;
+	}
+};
+
+struct zk_t
+{
+	operator bool () const
+	{
+		cout<<"zk_t from if "<<endl;
+		return true ;
+	}
+
+	int operator () (int n)
+	{
+		cout<<"zk_t from   "<<endl;
+		return n+2 ;
+	}
+
+};
+
+winsock_lib_t::instance_ptr()->call_from_ptr();
+	winsock_lib_t::instance().call_from_ref();
+
+	zk_t zk_;
+	if (zk_)
+	{
+		cout<<"if yes"<<endl;
+		cout<<zk_(23)<<endl;
+	}
