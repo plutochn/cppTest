@@ -5,8 +5,11 @@ namespace zz {
 
 struct msg_head_t
 {
-	m
+	msg_head_t(uint16_t cmd_id_)
 
+	uint16_t	cmd_id;
+	uint16_t	flag;
+	uint32_t	msg_body_szie;
 };
 
 }
