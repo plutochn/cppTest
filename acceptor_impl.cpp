@@ -99,6 +99,11 @@ void acceptor_t::close()
 	m_tq->produce(task_binder::bind(&acceptor_t::close_impl,this));
 }
 
+socket_client_t* acceptor_t::create(int new_fd)
+{
+	return new socket_client_t(m_tqp->random_alloc(new_fd), new_fd);
+}
+
 int acceptor_t::accept_impl(fd_socket_t client_fd)
 {
 	m_io_channel.dec_pending_req_num();
@@ -142,7 +147,7 @@ int acceptor_t::accept_impl(fd_socket_t client_fd)
 	addr_.remote_addr = inet_ntoa(sa_remote.sin_addr);
 	addr_.remote_port = ntohs(sa_remote.sin_port);
 
-	socket_client_t* client = new socket_client_t(m_tqp->random_alloc(client_fd), client_fd);
+	socket_client_t* client = create(client_fd);
 
 	client->on_open(m_iocp_poll,addr_);
 

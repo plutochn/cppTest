@@ -25,6 +25,8 @@ public:
 		return m_listen_sock;
 	}
 
+	socket_client_t* create(int new_fd);
+
 protected:
 	int accept_impl(fd_socket_t client_fd);
 	void close_impl();

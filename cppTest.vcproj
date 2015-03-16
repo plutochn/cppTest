@@ -241,6 +241,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\msg_handler_i.h"
+				>
+			</File>
+			<File
 				RelativePath=".\mutex.h"
 				>
 			</File>

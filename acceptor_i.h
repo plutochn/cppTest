@@ -7,6 +7,7 @@
 namespace zz {
 
 class	accept_channel_t;
+class   socket_client_t;
 
 class acceptor_i : public socket_i
 {
@@ -39,6 +40,11 @@ public:
 	 *	停止接受连接.
 	 */
 	virtual void close() = 0;
+
+	/**
+	 * 创建一个客户端.
+	 */
+	virtual socket_client_t* create(int new_fd) = 0;
 
 protected:
 	io_demultiplexer_i*		m_iocp_poll;
