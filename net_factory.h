@@ -191,7 +191,7 @@ public:
 public:
 	static global_data_t global_data;
 
-	static acceptor_i* listen(string& host_);
+	static acceptor_i* listen(string& host_, msg_handler_i* handler_);
 };
 
 }// namespace zz

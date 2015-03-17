@@ -2,13 +2,14 @@
 #define _acceptor_impl_h_
 
 #include "acceptor_i.h"
+#include "msg_handler_i.h"
 
 namespace zz {
 
 class acceptor_t : public acceptor_i
 {
 public:
-	acceptor_t(task_queue_pool_t* tqp_, io_demultiplexer_i* iocp_poll_);
+	acceptor_t(task_queue_pool_t* tqp_, io_demultiplexer_i* iocp_poll_, msg_handler_i* handler_);
 
 	virtual int do_cleanup() ;
 
@@ -41,6 +42,8 @@ private:
 	fd_socket_t			m_listen_sock;
 
 	accept_channel_t	m_io_channel;
+
+	msg_handler_i*      m_msg_handler;
 };
 
 }

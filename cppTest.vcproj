@@ -175,6 +175,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\common_socket_controller.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\cppTest.cpp"
 				>
 			</File>
@@ -225,6 +229,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\common_socket_controller.h"
+				>
+			</File>
+			<File
 				RelativePath=".\io_channel_impl.h"
 				>
 			</File>
@@ -266,6 +274,10 @@
 			</File>
 			<File
 				RelativePath=".\socket_client.h"
+				>
+			</File>
+			<File
+				RelativePath=".\socket_controller_i.h"
 				>
 			</File>
 			<File

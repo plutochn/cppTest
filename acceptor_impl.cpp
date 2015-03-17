@@ -4,14 +4,16 @@
 #include "socket_client.h"
 #include "net_factory.h"
 #include "strtool.h"
+#include "common_socket_controller.h"
 
 #include <iostream>
 
 namespace zz {
 
-acceptor_t::acceptor_t(task_queue_pool_t* tqp_, io_demultiplexer_i* iocp_poll_):
+acceptor_t::acceptor_t(task_queue_pool_t* tqp_, io_demultiplexer_i* iocp_poll_, msg_handler_i* handler_):
 	acceptor_i(tqp_, iocp_poll_),
 	m_listen_sock(INVALID_SOCKET),
+	m_msg_handler(handler_),
 	m_flag_sock_closed(false)
 {}
 
@@ -79,7 +81,7 @@ int acceptor_t::open(std::string& host_)
 
 	m_tq = m_tqp->random_alloc(m_listen_sock);
 
-	m_tq->produce(task_binder::bind(test));
+	//m_tq->produce(task_binder::bind(test));
 
 	ret = m_iocp_poll->register_fd(this);
 	if (0 != ret)
@@ -101,7 +103,7 @@ void acceptor_t::close()
 
 socket_client_t* acceptor_t::create(int new_fd)
 {
-	return new socket_client_t(m_tqp->random_alloc(new_fd), new_fd);
+	return new socket_client_t(m_tqp->random_alloc(new_fd), new_fd, new common_socket_controller_t(m_msg_handler));
 }
 
 int acceptor_t::accept_impl(fd_socket_t client_fd)

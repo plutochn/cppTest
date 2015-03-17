@@ -64,9 +64,31 @@ public:
 	virtual int handle_error() = 0;
 
 	virtual fd_socket_t socket() = 0;
+
+	
 };
 
-typedef socket_i* socket_ptr_t;
+class socket_client_i : public socket_i
+{
+public:
+	virtual sock_connection_info& connection_info() = 0;
+
+	template<typename T>
+	T* get_ctx() const
+	{
+		return (T*)m_ctx;
+	}
+
+	void set_ctx(void* ctx)
+	{
+		m_ctx = ctx;
+	}
+
+private:
+	void*		m_ctx;
+};
+
+typedef socket_client_i* socket_ptr_t;
 
 class io_demultiplexer_i
 {

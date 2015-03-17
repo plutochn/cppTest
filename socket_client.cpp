@@ -14,6 +14,8 @@ void socket_client_t::on_open(io_demultiplexer_i* poll_, sock_connection_info& a
 	m_addr = addr_;
 	m_io_channel.post_read_req(this);
 
+	m_sock_controller->handle_open(this);
+
 	string hello = "Welcome to echo server !\r\n";
 	async_send(hello);
 }
@@ -22,7 +24,11 @@ int	socket_client_t::do_cleanup()
 {
 	int ret = 0;
 	net_factory_t::global_data.socket_mgr.remove_client(this);
+
+	m_sock_controller->handle_broken(this);
+
 	delete this;
+
 	return ret;
 }
 
@@ -85,8 +91,10 @@ void socket_client_t::read_impl()
 
 	if (ret > 0)
 	{
+		/*
 		std::cout<<"recv data len:"<<ret;
-		std::cout<<"{recv data}"<<recv_data.c_str();
+		std::cout<<"{recv data}"<<recv_data.c_str();*/
+		m_sock_controller->handle_read(recv_data.c_str(), recv_data.length(), this);
 	}
 
 	m_io_channel.post_read_req(this);

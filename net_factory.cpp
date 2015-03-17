@@ -8,11 +8,11 @@ namespace zz {
 
 net_factory_t::global_data_t net_factory_t::global_data(TASK_QUEUE_NUM);
 
-acceptor_i* net_factory_t::listen(string& host_)
+acceptor_i* net_factory_t::listen(string& host_, msg_handler_i* handler_)
 {
 	global_data.start();
 
-	acceptor_i* acceptor_ = new acceptor_t(&global_data.tqp, &global_data.poll);
+	acceptor_i* acceptor_ = new acceptor_t(&global_data.tqp, &global_data.poll, handler_);
 
 	acceptor_->open(host_);
 

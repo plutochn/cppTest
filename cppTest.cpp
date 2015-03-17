@@ -1,99 +1,3 @@
-// cppTest.cpp : 定义控制台应用程序的入口点。
-//
-/*
-#include "stdafx.h"
-
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
-
-using namespace zz;
-
-bool exit_flag = false;
-
-void print_char(char ch)
-{
-	cout<<"["<<current_tid()<<"]"<<ch<<endl;
-}
-
-void recv_key_input(task_queue_t* tq_,task_queue_pool_t* tqp_)
-{
-	do	{
-
-		char ch;
-		cin>>ch;
-
-		if('q' == ch)
-		{
-			exit_flag = true;
-			break;
-		}
-
-		tq_->produce(task_binder::bind(print_char,ch));
-	}while(1);
-
-	tqp_->stop();
-}
-
-void print_num(int n)
-{
-	cout<<"["<<current_tid()<<"]"<<n<<endl;
-}
-
-void timer_task(int interval_sec, task_queue_t* tq_)
-{
-	int num  =  0;
-
-	while (false == exit_flag)
-	{
-		 tq_->produce(task_binder::bind(print_num,num++));
-		 Sleep(interval_sec*1000);
-	} 
-}
-
-void test()
-{
-	 
-     task_queue_pool_t tqp_(4);
-	 thread_t thread_;
-     
-	 tqp_.start(thread_);
-
-	 tid_t tid;
-	 thread_.create(task_binder::bind(timer_task,1,tqp_.alloc(0)), tid);
-	 thread_.create(task_binder::bind(recv_key_input,tqp_.alloc(1),&tqp_), tid);
-
-	 
-	 thread_.join_all();
-}
-
-struct	zz_zz
-{
-public:
-	void put_char() const
-	{
-		cout<<"Hello, sdw"<<endl;
-	}
-};
-
-int _tmain(int argc, _TCHAR* argv[])
-{
-	
- 
- test();
-	 
-	singleton_t<zz_zz>::instance_ptr()->put_char();
-	singleton_t<zz_zz>::instance_ptr()->put_char();
-// _CrtDumpMemoryLeaks();
-	system("pause");
-
-
-	return 0;
-}
-*/
-
-// cppTest.cpp : 定义控制台应用程序的入口点。
-//
 
 #include "stdafx.h"
 #include "net_factory.h"
@@ -195,11 +99,52 @@ void test()
 	cin>>ch;
 }
 
+class msg_handler_impl : public msg_handler_i
+{
+public:
+	virtual int handle_msg(msg_t& msg_, socket_ptr_t sock_)
+	{
+
+	    cout<<"client handle_msg:"<<endl;
+
+		cout<<"cmd_id "<<msg_.cmd_id()<<endl;
+		cout<<"msg body "<<msg_.body<<endl;
+
+		cout<<endl;
+
+		return 0;
+	}
+
+	virtual int handle_broken(socket_ptr_t sock_)
+	{
+		sock_connection_info& addr = sock_->connection_info();
+		cout<<"client broken:"<<endl;
+		cout<<"local:"<<addr.local_addr<<addr.local_port<<endl;
+		cout<<"peer:"<<addr.remote_addr<<addr.remote_port<<endl;
+		cout<<endl;
+
+		return 0;
+	}
+
+	virtual int handle_open(socket_ptr_t sock_)
+	{
+		sock_connection_info& addr = sock_->connection_info();
+		cout<<"client connect:"<<endl;
+		cout<<"local:"<<addr.local_addr<<addr.local_port<<endl;
+		cout<<"peer:"<<addr.remote_addr<<addr.remote_port<<endl;
+
+		cout<<endl;
+		return 0;
+	}
+};
+
 void test2()
 {
 
+	msg_handler_impl handler;
+
 	std::string listen_host = "tcp://127.0.0.1:12345";
-	net_factory_t::listen(listen_host);
+	net_factory_t::listen(listen_host, &handler);
 
 	
 	char ch;

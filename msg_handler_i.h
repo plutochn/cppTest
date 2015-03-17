@@ -8,8 +8,9 @@ namespace zz {
 class msg_handler_i
 {
 public:
-	virtual int handle_msg(msg_t& msg_, socket_ptr_t sock_);
-	virtual int handle_broken(socket_ptr_t sock_);
+	virtual int handle_msg(msg_t& msg_, socket_ptr_t sock_) = 0;
+	virtual int handle_broken(socket_ptr_t sock_) = 0;
+	virtual int handle_open(socket_ptr_t sock_) = 0;
 };
 
 }
