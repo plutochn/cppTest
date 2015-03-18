@@ -8,7 +8,7 @@ namespace zz {
 
 struct strtool_t
 {
-	static	void split(const string& src, const char* delimiter, vector<string>& vec_dest)
+	static	void split(const string& src, const char* separate, vector<string>& vec_dest)
 	{
 		vec_dest.clear();
 
@@ -19,7 +19,7 @@ struct strtool_t
 			if (pos >= src.length() )
 				break;
 
-			size_t new_pos = src.find(delimiter, pos);
+			size_t new_pos = src.find(separate, pos);
 			
 			size_t end_pos;
 
@@ -42,7 +42,7 @@ struct strtool_t
 			}
 			else
 			{
-				pos = new_pos + strlen(delimiter);
+				pos = new_pos + strlen(separate);
 			}
 			
 		} while (1);

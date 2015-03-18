@@ -308,6 +308,10 @@
 				RelativePath=".\thread.h"
 				>
 			</File>
+			<File
+				RelativePath=".\zzrpc.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="资源文件"
