@@ -2,12 +2,20 @@
 #include "stdafx.h"
 #include "net_factory.h"
 #include "strtool.h"
+#include "arg_helper.h"
+#include "codec.h"
 
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
 
 using namespace zz;
+
+void pause()
+{
+	char ch;
+	cin>>ch;
+}
 
 void SayHello()
 {
@@ -163,19 +171,71 @@ void test3()
  
 }
 
-void test4()
+void test4(int argc, char** argv)
 {
 	string host = "tcp://127.0.0.1:8001";
 	vector<string> vec_strs;
 	strtool_t::split(host, ":", vec_strs);
+
+	arg_helper_t arg_helper(argc, argv);
+
+	if (arg_helper.is_enable_option("-listen"))
+	{
+		string str = arg_helper.get_option_value("-listen");
+		cout<<str.c_str()<<endl;
+	}
+
+	if (arg_helper.is_enable_option("-broker"))
+	{
+		string str = arg_helper.get_option_value("-listen");
+		cout<<str.c_str()<<endl;
+	}
+	else
+	{
+		cout<<"-broker arg not exist"<<endl;
+	}
+}
+
+void test5()
+{
+	bin_encoder_t encoder_;
+
+	char v1 = '1';
+	unsigned char v2 = 0xaa;
+
+	unsigned short v3 = 65523;
+
+	short zz = 12324;
+
+	int m  = 12 ;
+
+	unsigned int um = 1245778;
+
+	string str = "123456789";
+	double c = 123e+12;
+
+	encoder_<<m<<zz; 
+ 
+	bin_decoder_t decoder_;
+
+	decoder_.init_decoder(encoder_.get_encoded_string());
+	int n;
+	short cc;
+	try
+	{
+		decoder_>>n>>cc>>m;
+	}
+	catch (exception& e_)
+	{
+		cout<<e_.what()<<endl;
+	}
+	pause();
 }
 
 int _tmain(int argc, _TCHAR* argv[])
 {
+	test5();
 
-
-	test2();
-	 
 	return 0;
 }
 

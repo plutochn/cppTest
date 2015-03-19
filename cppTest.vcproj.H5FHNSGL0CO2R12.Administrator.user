@@ -11,7 +11,7 @@
 			<DebugSettings
 				Command="$(TargetPath)"
 				WorkingDirectory=""
-				CommandArguments=""
+				CommandArguments="-listen tcp://127.0.0.1:12345"
 				Attach="false"
 				DebuggerType="3"
 				Remote="1"

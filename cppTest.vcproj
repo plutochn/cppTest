@@ -21,7 +21,7 @@
 			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			CharacterSet="1"
+			CharacterSet="2"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -175,6 +175,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\arg_helper.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\common_socket_controller.cpp"
 				>
 			</File>
@@ -225,7 +229,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\arg_helper.h"
+				>
+			</File>
+			<File
 				RelativePath=".\atomic_value.h"
+				>
+			</File>
+			<File
+				RelativePath=".\codec.h"
 				>
 			</File>
 			<File
