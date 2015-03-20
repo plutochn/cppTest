@@ -214,16 +214,18 @@ void test5()
 	string str = "123456789";
 	double c = 123e+12;
 
-	encoder_<<m<<zz; 
+	encoder_<<m<<zz<<str; 
  
 	bin_decoder_t decoder_;
 
 	decoder_.init_decoder(encoder_.get_encoded_string());
+
+	string str_r;
 	int n;
 	short cc;
 	try
 	{
-		decoder_>>n>>cc>>m;
+		decoder_>>n>>cc>>str_r;
 	}
 	catch (exception& e_)
 	{
@@ -232,9 +234,35 @@ void test5()
 	pause();
 }
 
+void test6()
+{
+	bin_encoder_t encoder_;
+	bin_decoder_t decoder_;
+
+	vector<int> vec_src;
+	vector<int> vec_dest;
+
+	list<int> list_src;
+	list<int> list_dest;
+
+	for (int i = 0; i<10; i++)
+	{
+		vec_src.push_back(i);
+		list_src.push_back(i+10);
+	}
+
+	encoder_<<vec_src<<list_src;
+
+	decoder_.init_decoder(encoder_.get_encoded_string());
+
+	decoder_>>vec_dest>>list_dest;
+
+	pause();
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
-	test5();
+	test6();
 
 	return 0;
 }

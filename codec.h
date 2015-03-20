@@ -3,6 +3,10 @@
 
 #include <string>
 #include <stdexcept>
+#include <vector>
+#include <list>
+#include <set>
+#include <map>
 using namespace std;
 
 namespace zz {
@@ -38,36 +42,6 @@ private:
 	string m_dest_buf;
 };
 
-class bin_decoder_t;
-
-template<typename T>
-class bin_tool_t
-{
-public:
-	static void encode(bin_encoder_t& encoder, T & t)
-	{
-		encoder.copy_value((const char*)&t, sizeof(T));
-	}
-
-	static void decode(bin_decoder_t& decoder, T & t)
-	{
-		decoder.copy_value((char*)&t, sizeof(T));
-	}
-};
-
-template<>
-class bin_tool_t<string>
-{
-public:
-	static void encode(bin_encoder_t& encoder, string & t)
-	{
-		size_t len = t.length();
-		encoder.copy_value((const char*)&len, sizeof(len));
-
-		encoder.copy_value(t.c_str(),len);
-	}
-};
-
 class bin_decoder_exception_t : public std::exception
 {
 public:
@@ -97,16 +71,16 @@ public:
 
 	void copy_value(char* buf, size_t size)
 	{
-		 if (size>m_remained_len)
-		 {
-			 throw bin_decoder_exception_t();
-			 return ;
-		 }
+		if (size>m_remained_len)
+		{
+			throw bin_decoder_exception_t();
+			return ;
+		}
 
-		 memcpy(buf,m_src_buf.c_str()+m_cur_pos,size);
+		memcpy(buf,m_src_buf.c_str()+m_cur_pos,size);
 
-		 m_cur_pos += size;
-		 m_remained_len -= size;
+		m_cur_pos += size;
+		m_remained_len -= size;
 	}
 
 	template<typename T>
@@ -121,6 +95,132 @@ private:
 	size_t m_remained_len;
 
 	string m_src_buf;
+};
+
+template<typename T>
+class bin_tool_t
+{
+public:
+	static void encode(bin_encoder_t& encoder, T & t)
+	{
+		encoder.copy_value((const char*)&t, sizeof(T));
+	}
+
+	static void decode(bin_decoder_t& decoder, T & t)
+	{
+		decoder.copy_value((char*)&t, sizeof(T));
+	}
+};
+
+template<>
+class bin_tool_t<string>
+{
+public:
+	static void encode(bin_encoder_t& encoder, string & t)
+	{
+		size_t len = t.length();
+		encoder.copy_value((const char*)&len, sizeof(len));
+
+		encoder.copy_value(t.c_str(),len);
+	}
+
+	static void decode(bin_decoder_t& decoder, string & t)
+	{
+		size_t len = 0;
+
+		decoder.copy_value((char*)&len,sizeof(size_t));
+
+		t.assign(len+1, '\0');
+
+		decoder.copy_value((char*)t.c_str(),len);
+	}
+};
+
+template<typename T>
+class bin_tool_t<vector<T>>
+{
+public:
+	static void encode(bin_encoder_t& encoder, vector<T> & t)
+	{
+		size_t len = t.size();
+		encoder.copy_value((const char*)&len, sizeof(len));
+
+		for (size_t i = 0; i<len; i++)
+		{
+			encoder<<t[i];
+		}
+	}
+
+	static void decode(bin_decoder_t& decoder, vector<T> & t)
+	{
+		size_t len = 0;
+		decoder.copy_value((char*)&len, sizeof(len));
+
+		for (size_t i = 0; i<len; i++)
+		{
+			T t_;
+			decoder>>t_;
+			t.push_back(t_);
+		}
+	}
+};
+
+template<typename T>
+class bin_tool_t<list<T>>
+{
+public:
+	static void encode(bin_encoder_t& encoder, list<T> & t)
+	{
+		size_t len = t.size();
+		encoder.copy_value((const char*)&len, sizeof(len));
+
+		list<T>::iterator it = t.begin();
+
+		for (size_t i = 0; i<len; i++)
+		{
+			encoder<<(*it);
+
+			it++;
+		}
+	}
+
+	static void decode(bin_decoder_t& decoder, list<T> & t)
+	{
+		size_t len = 0;
+		decoder.copy_value((char*)&len, sizeof(len));
+
+		for (size_t i = 0; i<len; i++)
+		{
+			T t_;
+			decoder>>t_;
+			t.push_back(t_);
+		}
+	}
+};
+
+class msg_i : public codec_i
+{
+public:
+	virtual string encode()
+	{
+		_encode();
+
+		return m_encoder.get_encoded_string();
+	}
+
+	virtual void   decode(string& src)
+	{
+		m_decoder.init_decoder(src);
+		_decode();
+	}
+
+protected:
+	virtual void _encode() = 0;
+	virtual void _decode() = 0;
+
+private:
+	bin_decoder_t m_decoder;
+	bin_encoder_t m_encoder;
 };
 
 }
