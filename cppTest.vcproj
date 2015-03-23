@@ -335,18 +335,46 @@
 			Name="base"
 			>
 			<File
-				RelativePath=".\base\zztype.h"
+				RelativePath=".\base\zzslot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\base\zztype_def.h"
 				>
 			</File>
 		</Filter>
-		<File
-			RelativePath=".\ClassDiagram1.cd"
+		<Filter
+			Name="rpc"
 			>
-		</File>
-		<File
-			RelativePath=".\ClassDiagram2.cd"
-			>
-		</File>
+			<File
+				RelativePath=".\zzrpc_base.h"
+				>
+			</File>
+			<File
+				RelativePath=".\zzrpc_broker.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\zzrpc_broker.h"
+				>
+			</File>
+			<File
+				RelativePath=".\zzrpc_client.h"
+				>
+			</File>
+			<File
+				RelativePath=".\zzrpc_delegate.h"
+				>
+			</File>
+			<File
+				RelativePath=".\zzrpc_ops.h"
+				>
+			</File>
+			<File
+				RelativePath=".\zzrpc_server.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>

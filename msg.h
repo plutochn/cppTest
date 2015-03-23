@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "base/zztype.h"
+#include "base/zztype_def.h"
 
 namespace zz {
 

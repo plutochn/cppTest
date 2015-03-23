@@ -218,7 +218,6 @@ protected:
 	virtual void _encode() = 0;
 	virtual void _decode() = 0;
 
-private:
 	bin_decoder_t m_decoder;
 	bin_encoder_t m_encoder;
 };

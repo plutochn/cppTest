@@ -5,6 +5,8 @@
 #include "arg_helper.h"
 #include "codec.h"
 
+#include "zzrpc_broker.h"
+
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
@@ -116,7 +118,7 @@ public:
 	    cout<<"client handle_msg:"<<endl;
 
 		cout<<"cmd_id "<<msg_.cmd_id()<<endl;
-		cout<<"msg body "<<msg_.body<<endl;
+		cout<<"msg body "<<msg_.body.c_str()<<endl;
 
 		cout<<endl;
 
@@ -127,8 +129,8 @@ public:
 	{
 		sock_connection_info& addr = sock_->connection_info();
 		cout<<"client broken:"<<endl;
-		cout<<"local:"<<addr.local_addr<<addr.local_port<<endl;
-		cout<<"peer:"<<addr.remote_addr<<addr.remote_port<<endl;
+		cout<<"local:"<<addr.local_addr<<":"<<addr.local_port<<endl;
+		cout<<"peer:"<<addr.remote_addr<<":"<<addr.remote_port<<endl;
 		cout<<endl;
 
 		return 0;
@@ -138,8 +140,8 @@ public:
 	{
 		sock_connection_info& addr = sock_->connection_info();
 		cout<<"client connect:"<<endl;
-		cout<<"local:"<<addr.local_addr<<addr.local_port<<endl;
-		cout<<"peer:"<<addr.remote_addr<<addr.remote_port<<endl;
+		cout<<"local:"<<addr.local_addr<<":"<<addr.local_port<<endl;
+		cout<<"peer:"<<addr.remote_addr<<":"<<addr.remote_port<<endl;
 
 		cout<<endl;
 		return 0;
@@ -260,9 +262,31 @@ void test6()
 	pause();
 }
 
+void test7()
+{
+	msg_handler_impl handler;
+	std::string listen_host = "tcp://127.0.0.1:12345";
+
+	zzrpc_broker_t broker(listen_host, &handler);
+
+	if ( broker.start() == -1 )
+	{
+		cout<<"broker.start() fail"<<endl;
+	}
+	else
+	{
+		cout<<"broker.start() ok."<<endl;
+		cout<<"press any key to exit."<<endl;
+	}
+
+	char ch;
+	cin>>ch;
+	net_factory_t::global_data.stop();
+}
+
 int _tmain(int argc, _TCHAR* argv[])
 {
-	test6();
+	test7();
 
 	return 0;
 }

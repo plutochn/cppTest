@@ -30,9 +30,9 @@ while True:
     cmd_id = int(raw_input())
     print 'input msg body'
     body = raw_input()
-    body_size = len(body)
+    body_size = len(body)+4
 
-    msg_head = struct.pack('hhi',cmd_id,0,body_size)
+    msg_head = struct.pack('hhii',cmd_id,0,body_size,body_size-4)
     msg = msg_head + body
 
     s.send(msg)

@@ -2,6 +2,7 @@
 #define _msg_handler_i_h_
 
 #include "msg.h"
+#include "netbase.h"
 
 namespace zz {
 
