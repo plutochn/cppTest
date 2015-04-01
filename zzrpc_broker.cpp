@@ -8,57 +8,27 @@ using namespace std;
 namespace zz {
 
 zzrpc_broker_t::zzrpc_broker_t(string& host_, msg_handler_i* hook_handler_):
-	m_host(host_),
-	m_hook_handler(hook_handler_),
+	zzrpc_base_t(hook_handler_),
+	m_listen_host(host_),
 	m_acceptor(NULL)
 {}
 
-int zzrpc_broker_t::handle_rpc_client_reg(rpc_reg_client_msg_t& msg_, socket_ptr_t sock_)
-{
-	return 0;
-}
-
 int zzrpc_broker_t::handle_msg(msg_t& msg_, socket_ptr_t sock_)
 {
-	if (NULL != m_hook_handler)
-	{
-		m_hook_handler->handle_msg(msg_, sock_);
-	}
-
-	uint32_t cmd_id = msg_.cmd_id();
-
-	zzslot_callback_t* callback = m_slot_interface.get(cmd_id);
-
-	if (NULL == callback)
-	{
-		cout<<"not found callback func with cmd_id = %u"<<cmd_id<<endl;
-		return -1;
-	}
-
-	else
-	{
-		zzslot_msg_arg_t args(sock_, msg_.body);
-		callback->exe(args);
-
-	}
-	return 0;
+	return zzrpc_base_t::handle_msg(msg_, sock_);
 }
 
 int zzrpc_broker_t::handle_broken(socket_ptr_t sock_)
 {
-	if (NULL != m_hook_handler)
-	{
-		m_hook_handler->handle_broken(sock_);
-	}
+	zzrpc_base_t::handle_broken(sock_);
+
 	return 0;
 }
 
 int zzrpc_broker_t::handle_open(socket_ptr_t sock_)
 {
-	if (NULL != m_hook_handler)
-	{
-		m_hook_handler->handle_open(sock_);
-	}
+	zzrpc_base_t::handle_open(sock_);
+
 	return 0;
 }
 
@@ -74,7 +44,7 @@ int test_handle_rpc_client_reg(rpc_reg_client_msg_t& msg_, socket_ptr_t sock_)
 int	zzrpc_broker_t::start()
 {
 	
-	m_acceptor = net_factory_t::listen(m_host, this);
+	m_acceptor = net_factory_t::listen(m_listen_host, this);
 
 	if (m_acceptor == NULL)
 	{
@@ -96,6 +66,34 @@ void zzrpc_broker_t::stop()
 
 	m_tq.stop();
 	m_thread.join_all();
+}
+
+/*
+ * zzrpc_master_broker
+ */
+zzrpc_master_broker_t::zzrpc_master_broker_t(string& host_, msg_handler_i* hook_handler_):
+	zzrpc_broker_t(host_, hook_handler_)
+{
+
+}
+
+int zzrpc_master_broker_t::handle_rpc_client_reg(rpc_reg_client_msg_t& msg_, socket_ptr_t sock_)
+{
+	return 0;
+}
+
+int zzrpc_master_broker_t::handle_broken(socket_ptr_t sock_)
+{
+	zzrpc_broker_t::handle_broken(sock_);
+
+	return 0;
+}
+
+int zzrpc_master_broker_t::handle_open(socket_ptr_t sock_)
+{
+	zzrpc_broker_t::handle_open(sock_);
+
+	return 0;
 }
 
 }

@@ -320,10 +320,6 @@
 				RelativePath=".\thread.h"
 				>
 			</File>
-			<File
-				RelativePath=".\zzrpc.h"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="资源文件"
@@ -334,6 +330,10 @@
 		<Filter
 			Name="base"
 			>
+			<File
+				RelativePath=".\zz_compile_opt.h"
+				>
+			</File>
 			<File
 				RelativePath=".\base\zzslot.h"
 				>
@@ -351,6 +351,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\zzrpc_bridge.h"
+				>
+			</File>
+			<File
 				RelativePath=".\zzrpc_broker.cpp"
 				>
 			</File>
@@ -360,10 +364,6 @@
 			</File>
 			<File
 				RelativePath=".\zzrpc_client.h"
-				>
-			</File>
-			<File
-				RelativePath=".\zzrpc_delegate.h"
 				>
 			</File>
 			<File

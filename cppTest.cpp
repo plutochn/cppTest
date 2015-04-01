@@ -7,6 +7,7 @@
 
 #include "zzrpc_broker.h"
 
+
 #define _CRTDBG_MAP_ALLOC
 #include <stdlib.h>
 #include <crtdbg.h>
@@ -267,7 +268,7 @@ void test7()
 	msg_handler_impl handler;
 	std::string listen_host = "tcp://127.0.0.1:12345";
 
-	zzrpc_broker_t broker(listen_host, &handler);
+	zzrpc_master_broker_t broker(listen_host, &handler);
 
 	if ( broker.start() == -1 )
 	{
