@@ -15,6 +15,10 @@ public:
 
 public:
 	arg_helper_t(int argc, char* argv[]);
+
+	/**
+	 *	not implement yet.
+     */
 	arg_helper_t(std::string& args);
 
 	bool is_enable_option(const char* opt) const ;

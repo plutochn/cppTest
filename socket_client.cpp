@@ -16,8 +16,8 @@ void socket_client_t::on_open(io_demultiplexer_i* poll_, sock_connection_info& a
 
 	m_sock_controller->handle_open(this);
 
-	string hello = "Welcome to echo server !\r\n";
-	async_send(hello);
+	//string hello = "Welcome to echo server !\r\n";
+	//async_send(hello);
 }
 
 int	socket_client_t::do_cleanup()
@@ -102,7 +102,7 @@ void socket_client_t::read_impl()
 
 void socket_client_t::write_impl()
 {
-
+	m_io_channel.write(this, m_send_buff);
 }
 
 }

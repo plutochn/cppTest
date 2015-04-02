@@ -183,6 +183,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\connector.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\cppTest.cpp"
 				>
 			</File>
@@ -242,6 +246,10 @@
 			</File>
 			<File
 				RelativePath=".\common_socket_controller.h"
+				>
+			</File>
+			<File
+				RelativePath=".\connector.h"
 				>
 			</File>
 			<File

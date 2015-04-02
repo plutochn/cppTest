@@ -31,7 +31,8 @@ public:
 	int handle_read();
 	int handle_write();
 	int handle_error();
-	void close();
+
+	virtual void close();
 
 	int handle_accept(fd_socket_t client_fd)
 	{
@@ -43,7 +44,7 @@ public:
 		return m_fd_sock;
 	}
 
-	void async_send(std::string& data_)
+	virtual void async_send(std::string& data_)
 	{
 		if (false == data_.empty() )
 		{

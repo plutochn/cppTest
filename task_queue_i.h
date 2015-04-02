@@ -222,6 +222,39 @@ struct task_binder
 		return task_t(new lambada_t(f,arg0,pobj));
 	}
 
+	template<typename RET, typename A0,typename A1, typename B0 ,typename B1, typename T>
+	static task_t bind(RET (T::*f)(A0,A1), B0 arg0, B1 arg1, T * pobj)
+	{
+
+		struct lambada_t : public task_impl_i 
+		{
+			lambada_t(RET (T::*f_)(A0, A1),B0 arg0_,B1 arg1_, T * pobj_):
+		_f(f_),_pobj(pobj_),_arg0(arg0_),_arg1(arg1_)
+		{
+
+		}
+
+		virtual void exe()
+		{
+			(_pobj->*_f)(_arg0,_arg1);
+		}
+
+		virtual task_impl_i* fork()
+		{
+			return new lambada_t(_f, _arg0,_arg1, _pobj);
+		}
+
+		RET (T::*_f)(A0, A1);
+		B0 _arg0;
+		B1 _arg1;
+		T* _pobj;
+
+
+		};
+
+		return task_t(new lambada_t(f,arg0,arg1,pobj));
+	}
+
 };
 
 class task_queue_t

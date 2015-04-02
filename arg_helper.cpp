@@ -13,9 +13,6 @@ arg_helper_t::arg_helper_t(int argc, char* argv[])
 	}
 }
 
-/**
- *	not implement yet.
- */
 arg_helper_t::arg_helper_t(std::string& args)
 {
 	 

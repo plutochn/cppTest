@@ -5,48 +5,12 @@
 #include "thread.h"
 #include "task_queue_i.h"
 #include "acceptor_i.h"
-#include "codec.h"
 #include "base/zzslot.h"
 
 #include <set>
 using namespace std;
 
 namespace zz {
-
-enum rpc_node_type
-{
-	k_rpc_node_bridge_broker,
-	k_rpc_node_master_broker,
-	k_rpc_node_slave_broker,
-	k_rpc_node_server,
-};
-
-enum rpc_cmd_e
-{
-	k_rpc_reg_client = 10,
-	k_rpc_reg_interface
-};
-
-class rpc_reg_client_msg_t : public msg_i
-{
-public:
-	rpc_reg_client_msg_t():
-		m_service_name("")
-	{}
-
-	string		m_service_name;
-
-protected:
-	virtual void _encode()
-	{
-		m_encoder<<m_service_name;
-	}
-
-	virtual void _decode()
-	{
-		m_decoder>>m_service_name;
-	}
-};
 
 class zzrpc_broker_t : public zzrpc_base_t
 {
@@ -60,7 +24,9 @@ public:
 	int		start();
 	void	stop();
 
-private:
+	virtual int bind_callback_with_cmd() = 0;
+
+protected:
 	acceptor_i*			m_acceptor;
 	thread_t			m_thread;
 	task_queue_t		m_tq;
@@ -73,7 +39,7 @@ class rpc_node_id_alloctor_t
 public:
 	rpc_node_id_alloctor_t()
 	{
-		m_alloc_id = 0;
+		m_alloc_id = 1;
 	}
 
 	uint32_t alloc_id()
@@ -82,6 +48,10 @@ public:
 		{
 			m_alloc_id++;
 
+			if (invalid_node_id == m_alloc_id)
+			{
+				m_alloc_id = 1;
+			}
 			return m_alloc_id;
 		}
 		else
@@ -113,15 +83,38 @@ private:
 class zzrpc_master_broker_t : public zzrpc_broker_t
 {
 public:
+	struct session_ctx_t
+	{
+		session_ctx_t():
+			node_id(invalid_node_id),
+			node_type(k_rpc_node_invalid)
+		{}
+		uint32_t	node_id;
+		int			node_type;
+	};
+
+public:
 	zzrpc_master_broker_t(string& host_, msg_handler_i* hook_handler_=NULL);
 
-	int handle_rpc_client_reg(rpc_reg_client_msg_t&, socket_ptr_t);
+	int handle_rpc_svr_reg(msg_reg_svr_to_mb&, socket_ptr_t);
+	int handle_rpc_client_reg(msg_reg_client_to_mb&, socket_ptr_t);
 
 	virtual int handle_broken(socket_ptr_t sock_);
 	virtual int handle_open(socket_ptr_t sock_);
 
+	virtual int bind_callback_with_cmd() ;
+
+protected:
+	int handle_rpc_svr_reg_impl(msg_reg_svr_to_mb&, socket_ptr_t);
+
 private:
 	rpc_node_id_alloctor_t	m_id_alloctor; 
+
+	map<string, uint32_t>	m_svr_name_to_node_id;
+
+	vector<string>			m_slave_broker_host;
+
+	string					m_bridge_broker_host;
 };
 
 }

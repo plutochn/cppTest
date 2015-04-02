@@ -107,6 +107,36 @@ SOCKET socket_ops_t::create_nonblock_socket(void)
 		WSA_FLAG_OVERLAPPED);
 }
 
+SOCKET socket_ops_t::connect(const char* addr, unsigned short port)
+{
+	SOCKET sock = create_nonblock_socket();
+
+	if (INVALID_SOCKET == sock)
+	{
+		return sock;
+	}
+
+	sockaddr_in sock_addr_ ;
+	ZeroMemory(&sock_addr_, sizeof(sockaddr_in));
+
+	sock_addr_.sin_family = AF_INET;
+	sock_addr_.sin_port = htons(port);
+	sock_addr_.sin_addr.S_un.S_addr = inet_addr(addr);
+
+	if ( 0 != bind(sock, (sockaddr*)(&sock_addr_), sizeof(sock_addr_) ) )
+	{
+		closesocket(sock);
+		return INVALID_SOCKET;
+	}
+
+	if ( 0 != listen(sock, 5))
+	{
+		closesocket(sock);
+		return INVALID_SOCKET;
+	}
+	return sock;
+}
+
 SOCKET socket_ops_t::bind_and_listen(const char* addr, unsigned short port)
 {
 	SOCKET sock = create_nonblock_socket();

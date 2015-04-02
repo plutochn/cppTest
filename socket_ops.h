@@ -36,6 +36,9 @@ public:
 	static SOCKET create_nonblock_socket(void);
 
 	static	SOCKET bind_and_listen(const char* addr, unsigned short port);
+
+	static	SOCKET connect(const char* addr, unsigned short port);
+
 private:
 	static int load_mswsock_fn();
 

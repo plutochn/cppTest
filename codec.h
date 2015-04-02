@@ -9,6 +9,10 @@
 #include <map>
 using namespace std;
 
+#include "base/zztype_def.h"
+#include "msg.h"
+#include "netbase.h"
+
 namespace zz {
 
 class codec_i
@@ -220,6 +224,27 @@ protected:
 
 	bin_decoder_t m_decoder;
 	bin_encoder_t m_encoder;
+};
+
+class msg_send_tool_t
+{
+public:
+	static int send(msg_i& msg_, uint16_t cmd_id, socket_ptr_t sock_)
+	{
+		string body = msg_.encode();
+
+		msg_head_t head;
+		head.cmd_id = cmd_id;
+		head.flag = 0;
+		head.msg_body_size = body.length();
+
+		string msg((const char*)&head, sizeof(head));
+
+		msg += body;
+
+		sock_->async_send(msg);
+	}
+
 };
 
 }

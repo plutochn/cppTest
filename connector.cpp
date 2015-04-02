@@ -1,5 +1,5 @@
 #include "io_channel_impl.h"
-#include "acceptor_impl.h"
+#include "connector.h"
 #include "socket_ops.h"
 #include "socket_client.h"
 #include "net_factory.h"
@@ -7,48 +7,12 @@
 #include "common_socket_controller.h"
 
 #include <iostream>
+#include <string>
+using namespace std;
 
 namespace zz {
 
-acceptor_t::acceptor_t(task_queue_pool_t* tqp_, io_demultiplexer_i* iocp_poll_, msg_handler_i* handler_):
-	acceptor_i(tqp_, iocp_poll_),
-	m_listen_sock(INVALID_SOCKET),
-	m_msg_handler(handler_),
-	m_flag_sock_closed(false)
-{}
-
-int acceptor_t::do_cleanup()
-{
-	int ret = 0;
-
-	net_factory_t::global_data.socket_mgr.remove_accptor(this);
-	delete this;
-
-	return ret;
-}
-
-int acceptor_t::handle_accept(fd_socket_t client_fd)
-{
-	int ret = 0;
-	m_tq->produce(task_binder::bind(&acceptor_t::accept_impl,client_fd, this));
-
-	return ret;
-}
-
-int acceptor_t::handle_error()
-{
-	int ret = 0;
-	m_tq->produce(task_binder::bind(&acceptor_t::error_impl,this));
-
-	return ret;
-}
-
-void test()
-{
-	std::cout<<"This s a test"<<endl;
-}
-
-int acceptor_t::open(std::string& host_)
+int connector_t::connect(string& host_)
 {
 	int ret = 0;
 
@@ -71,15 +35,15 @@ int acceptor_t::open(std::string& host_)
 
 	sscanf_s(vec_strs[1].c_str(), "%d", &port);
 
-	m_listen_sock = socket_ops_t::bind_and_listen(addr.c_str(), port);
+	m_sock_fd = socket_ops_t::connect(addr.c_str(), port);
 
-	if (m_listen_sock == INVALID_SOCKET)
+	if (m_sock_fd == INVALID_SOCKET)
 	{
 		ret = -1;
 		return  ret;
 	}
 
-	m_tq = m_tqp->random_alloc(m_listen_sock);
+	m_tq = m_tqp->random_alloc(m_sock_fd);
 
 	//m_tq->produce(task_binder::bind(test));
 
@@ -89,16 +53,14 @@ int acceptor_t::open(std::string& host_)
 		return ret;
 	}
 
-	ret = m_io_channel.post_accept_req(this);
+	cout<<"<connector>连接主机:"<<addr.c_str()<<":"<<port<<endl;
 
-	cout<<"<acceptor>监听主机:"<<addr.c_str()<<":"<<port<<endl;
 	return ret;
 }
 
 void acceptor_t::close()
 {
-	net_factory_t::global_data.socket_mgr.remove_accptor(this);
-	m_tq->produce(task_binder::bind(&acceptor_t::close_impl,this));
+	 m_socket_client.close();
 }
 
 socket_client_t* acceptor_t::create(int new_fd)
@@ -158,27 +120,5 @@ int acceptor_t::accept_impl(fd_socket_t client_fd)
 	return ret;
 }
 
-void acceptor_t::close_impl()
-{
-	if (m_flag_sock_closed == false) 
-	{
-		closesocket(m_listen_sock);
-		m_flag_sock_closed = true ;
-	}
-
-	if (m_io_channel.has_pending_req() == false)
-	{
-		do_cleanup();
-	}
-}
-
-/**
- *	发生错误直接调用close_impl函数关闭套接字.
- */
-void acceptor_t::error_impl()
-{
-   m_io_channel.dec_pending_req_num();
-   close_impl();
-}
 
 }// namespace zz

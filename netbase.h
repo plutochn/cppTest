@@ -84,6 +84,8 @@ public:
 		m_ctx = ctx;
 	}
 
+	virtual void async_send(std::string& data_) {}
+
 private:
 	void*		m_ctx;
 };
