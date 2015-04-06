@@ -1,0 +1,152 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{18B8C7DD-92C3-413C-9C5B-FE392FD3FCC4}</ProjectGuid>
+    <RootNamespace>cppTest</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectName>zz_lib</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.50727.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>$(SolutionDir)\bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\tmp\$(Configuration)\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)\bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)\tmp\$(Configuration)\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(SolutionDir)\src</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <Optimization>MaxSpeed</Optimization>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <AdditionalIncludeDirectories>$(SolutionDir)\src</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="LICENSE" />
+    <None Include="README.md" />
+    <None Include="src\app\test.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\app\main.cpp" />
+    <ClCompile Include="src\app\stdafx.cpp" />
+    <ClCompile Include="src\base\arg_helper.cpp" />
+    <ClCompile Include="src\concurrency\task_queue_impl.cpp" />
+    <ClCompile Include="src\concurrency\thread.cpp" />
+    <ClCompile Include="src\net\acceptor_impl.cpp" />
+    <ClCompile Include="src\net\common_socket_controller.cpp" />
+    <ClCompile Include="src\net\connector.cpp" />
+    <ClCompile Include="src\net\iocp_impl.cpp" />
+    <ClCompile Include="src\net\io_channel_impl.cpp" />
+    <ClCompile Include="src\net\net_factory.cpp" />
+    <ClCompile Include="src\net\socket_client.cpp" />
+    <ClCompile Include="src\net\socket_ops.cpp" />
+    <ClCompile Include="src\rpc\zzrpc_broker.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\app\stdafx.h" />
+    <ClInclude Include="src\app\targetver.h" />
+    <ClInclude Include="src\base\arg_helper.h" />
+    <ClInclude Include="src\base\singleton.h" />
+    <ClInclude Include="src\base\smart_ptr.h" />
+    <ClInclude Include="src\base\strtool.h" />
+    <ClInclude Include="src\base\zzslot.h" />
+    <ClInclude Include="src\base\zztype_def.h" />
+    <ClInclude Include="src\base\zz_compile_opt.h" />
+    <ClInclude Include="src\concurrency\atomic_value.h" />
+    <ClInclude Include="src\concurrency\mutex.h" />
+    <ClInclude Include="src\concurrency\task_queue_i.h" />
+    <ClInclude Include="src\concurrency\thread.h" />
+    <ClInclude Include="src\net\acceptor_i.h" />
+    <ClInclude Include="src\net\acceptor_impl.h" />
+    <ClInclude Include="src\net\codec.h" />
+    <ClInclude Include="src\net\common_socket_controller.h" />
+    <ClInclude Include="src\net\connector.h" />
+    <ClInclude Include="src\net\iocp_event.h" />
+    <ClInclude Include="src\net\iocp_impl.h" />
+    <ClInclude Include="src\net\io_channel_impl.h" />
+    <ClInclude Include="src\net\msg.h" />
+    <ClInclude Include="src\net\msg_handler_i.h" />
+    <ClInclude Include="src\net\netbase.h" />
+    <ClInclude Include="src\net\net_factory.h" />
+    <ClInclude Include="src\net\socket_client.h" />
+    <ClInclude Include="src\net\socket_controller_i.h" />
+    <ClInclude Include="src\net\socket_ops.h" />
+    <ClInclude Include="src\rpc\zzrpc_base.h" />
+    <ClInclude Include="src\rpc\zzrpc_bridge.h" />
+    <ClInclude Include="src\rpc\zzrpc_broker.h" />
+    <ClInclude Include="src\rpc\zzrpc_client.h" />
+    <ClInclude Include="src\rpc\zzrpc_ops.h" />
+    <ClInclude Include="src\rpc\zzrpc_server.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

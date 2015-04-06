@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
+    </Filter>
+    <Filter Include="base">
+      <UniqueIdentifier>{4e3071ed-189f-4fa0-8717-b8ca94c92e0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rpc">
+      <UniqueIdentifier>{f7fe5de9-1f2a-4eb0-afdb-57685700c373}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="concurrency">
+      <UniqueIdentifier>{08d2e64a-7234-4263-b108-de715456a879}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="net">
+      <UniqueIdentifier>{850a1774-3061-47bb-b5d7-0a47b57138c8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="app">
+      <UniqueIdentifier>{88943582-3053-4b2d-81da-0afdbecb1583}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="LICENSE">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="README.md">
+      <Filter>资源文件</Filter>
+    </None>
+    <None Include="src\app\test.py">
+      <Filter>app</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\base\arg_helper.cpp">
+      <Filter>base</Filter>
+    </ClCompile>
+    <ClCompile Include="src\concurrency\task_queue_impl.cpp">
+      <Filter>concurrency</Filter>
+    </ClCompile>
+    <ClCompile Include="src\concurrency\thread.cpp">
+      <Filter>concurrency</Filter>
+    </ClCompile>
+    <ClCompile Include="src\net\acceptor_impl.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="src\net\common_socket_controller.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="src\net\connector.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="src\net\io_channel_impl.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="src\net\iocp_impl.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="src\net\net_factory.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="src\net\socket_client.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="src\net\socket_ops.cpp">
+      <Filter>net</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\main.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\app\stdafx.cpp">
+      <Filter>app</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\zzrpc_broker.cpp">
+      <Filter>rpc</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\base\arg_helper.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\base\singleton.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\base\smart_ptr.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\base\strtool.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\base\zz_compile_opt.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\base\zzslot.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\base\zztype_def.h">
+      <Filter>base</Filter>
+    </ClInclude>
+    <ClInclude Include="src\concurrency\atomic_value.h">
+      <Filter>concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="src\concurrency\mutex.h">
+      <Filter>concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="src\concurrency\task_queue_i.h">
+      <Filter>concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="src\concurrency\thread.h">
+      <Filter>concurrency</Filter>
+    </ClInclude>
+    <ClInclude Include="src\net\acceptor_i.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="src\net\acceptor_impl.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="src\net\codec.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="src\net\common_socket_controller.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="src\net\connector.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="src\net\io_channel_impl.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="src\net\iocp_event.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="src\net\iocp_impl.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="src\net\msg.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="src\net\msg_handler_i.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="src\net\net_factory.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="src\net\netbase.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="src\net\socket_client.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="src\net\socket_controller_i.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="src\net\socket_ops.h">
+      <Filter>net</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\stdafx.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\targetver.h">
+      <Filter>app</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\zzrpc_base.h">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\zzrpc_bridge.h">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\zzrpc_broker.h">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\zzrpc_client.h">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\zzrpc_ops.h">
+      <Filter>rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="src\rpc\zzrpc_server.h">
+      <Filter>rpc</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
