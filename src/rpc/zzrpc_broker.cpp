@@ -105,6 +105,8 @@ int zzrpc_master_broker_t::handle_rpc_svr_reg_impl(msg_reg_svr_to_mb& msg_, sock
 		msg_ret_.m_bind_slave_broker_idx = new_node_id%m_slave_broker_host.size();
 	}
 
+	msg_send_tool_t::send(msg_ret_, k_rpc_reg_delegator_service_ret, sock_);
+
 	return 0;
 }
 
@@ -143,10 +145,10 @@ int zzrpc_master_broker_t::handle_open(socket_ptr_t sock_)
 
 int zzrpc_master_broker_t::bind_callback_with_cmd()
 {
-	m_slot_interface.add(k_rpc_reg_delegator_server,zzrpc_ops_t::gen_callback(&zzrpc_master_broker_t::handle_rpc_svr_reg, this));
+	m_slot_interface.add(k_rpc_reg_delegator_service,zzrpc_ops_t::gen_callback(&zzrpc_master_broker_t::handle_rpc_svr_reg, this));
 	m_slot_interface.add(k_rpc_reg_delegator_client,zzrpc_ops_t::gen_callback(&zzrpc_master_broker_t::handle_rpc_client_reg, this));
 
 	return 0;
 }
 
-}
+}// namespace zz end

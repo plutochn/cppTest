@@ -3,6 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zz_lib", "zz_lib.vcxproj", "{18B8C7DD-92C3-413C-9C5B-FE392FD3FCC4}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zz_app", "zz_app.vcxproj", "{D1D9FE1D-6099-4009-B7FC-8518E98CC219}"
+	ProjectSection(ProjectDependencies) = postProject
+		{18B8C7DD-92C3-413C-9C5B-FE392FD3FCC4} = {18B8C7DD-92C3-413C-9C5B-FE392FD3FCC4}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zz_app2", "zz_app2.vcxproj", "{52EDC782-495A-40A4-AE69-392FF249D404}"
+	ProjectSection(ProjectDependencies) = postProject
+		{18B8C7DD-92C3-413C-9C5B-FE392FD3FCC4} = {18B8C7DD-92C3-413C-9C5B-FE392FD3FCC4}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +23,14 @@ Global
 		{18B8C7DD-92C3-413C-9C5B-FE392FD3FCC4}.Debug|Win32.Build.0 = Debug|Win32
 		{18B8C7DD-92C3-413C-9C5B-FE392FD3FCC4}.Release|Win32.ActiveCfg = Release|Win32
 		{18B8C7DD-92C3-413C-9C5B-FE392FD3FCC4}.Release|Win32.Build.0 = Release|Win32
+		{D1D9FE1D-6099-4009-B7FC-8518E98CC219}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D1D9FE1D-6099-4009-B7FC-8518E98CC219}.Debug|Win32.Build.0 = Debug|Win32
+		{D1D9FE1D-6099-4009-B7FC-8518E98CC219}.Release|Win32.ActiveCfg = Release|Win32
+		{D1D9FE1D-6099-4009-B7FC-8518E98CC219}.Release|Win32.Build.0 = Release|Win32
+		{52EDC782-495A-40A4-AE69-392FF249D404}.Debug|Win32.ActiveCfg = Debug|Win32
+		{52EDC782-495A-40A4-AE69-392FF249D404}.Debug|Win32.Build.0 = Debug|Win32
+		{52EDC782-495A-40A4-AE69-392FF249D404}.Release|Win32.ActiveCfg = Release|Win32
+		{52EDC782-495A-40A4-AE69-392FF249D404}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

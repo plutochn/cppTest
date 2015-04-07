@@ -6,7 +6,7 @@
 
 namespace zz {
 
-class msg_handler_i
+class LIBRARY_API msg_handler_i
 {
 public:
 	virtual int handle_msg(msg_t& msg_, socket_ptr_t sock_) = 0;

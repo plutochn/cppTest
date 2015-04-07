@@ -24,7 +24,7 @@
     <WholeProgramOptimization>true</WholeProgramOptimization>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -42,19 +42,19 @@
     <_ProjectFileVersion>11.0.50727.1</_ProjectFileVersion>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <OutDir>$(SolutionDir)\bin\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\tmp\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)tmp\$(Configuration)\</IntDir>
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <OutDir>$(SolutionDir)\bin\$(Configuration)\</OutDir>
-    <IntDir>$(SolutionDir)\tmp\$(Configuration)\</IntDir>
+    <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
+    <IntDir>$(SolutionDir)tmp\$(Configuration)\</IntDir>
     <LinkIncremental>false</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>ZZ_DLL;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -92,11 +92,8 @@
   <ItemGroup>
     <None Include="LICENSE" />
     <None Include="README.md" />
-    <None Include="src\app\test.py" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\app\main.cpp" />
-    <ClCompile Include="src\app\stdafx.cpp" />
     <ClCompile Include="src\base\arg_helper.cpp" />
     <ClCompile Include="src\concurrency\task_queue_impl.cpp" />
     <ClCompile Include="src\concurrency\thread.cpp" />
@@ -109,10 +106,9 @@
     <ClCompile Include="src\net\socket_client.cpp" />
     <ClCompile Include="src\net\socket_ops.cpp" />
     <ClCompile Include="src\rpc\zzrpc_broker.cpp" />
+    <ClCompile Include="src\rpc\zzrpc_service.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\app\stdafx.h" />
-    <ClInclude Include="src\app\targetver.h" />
     <ClInclude Include="src\base\arg_helper.h" />
     <ClInclude Include="src\base\singleton.h" />
     <ClInclude Include="src\base\smart_ptr.h" />
@@ -144,7 +140,7 @@
     <ClInclude Include="src\rpc\zzrpc_broker.h" />
     <ClInclude Include="src\rpc\zzrpc_client.h" />
     <ClInclude Include="src\rpc\zzrpc_ops.h" />
-    <ClInclude Include="src\rpc\zzrpc_server.h" />
+    <ClInclude Include="src\rpc\zzrpc_service.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

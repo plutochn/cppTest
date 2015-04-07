@@ -1,12 +1,14 @@
 #ifndef _strtool_h_
 #define _strtool_h_
 
+#include "base/zz_compile_opt.h"
+
 #include <vector>
 using namespace std;
 
 namespace zz {
 
-struct strtool_t
+struct LIBRARY_API strtool_t
 {
 	static	void split(const string& src, const char* separate, vector<string>& vec_dest)
 	{

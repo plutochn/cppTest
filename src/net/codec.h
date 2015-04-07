@@ -243,6 +243,8 @@ public:
 		msg += body;
 
 		sock_->async_send(msg);
+
+		return 0;
 	}
 
 };

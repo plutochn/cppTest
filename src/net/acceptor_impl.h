@@ -1,12 +1,13 @@
 #ifndef _acceptor_impl_h_
 #define _acceptor_impl_h_
 
+#include "base/zz_compile_opt.h"
 #include "net/acceptor_i.h"
 #include "net/msg_handler_i.h"
 
 namespace zz {
 
-class acceptor_t : public acceptor_i
+class LIBRARY_API acceptor_t : public acceptor_i
 {
 public:
 	acceptor_t(task_queue_pool_t* tqp_, io_demultiplexer_i* iocp_poll_, msg_handler_i* handler_);

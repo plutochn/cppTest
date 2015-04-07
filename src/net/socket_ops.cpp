@@ -123,17 +123,12 @@ SOCKET socket_ops_t::connect(const char* addr, unsigned short port)
 	sock_addr_.sin_port = htons(port);
 	sock_addr_.sin_addr.S_un.S_addr = inet_addr(addr);
 
-	if ( 0 != bind(sock, (sockaddr*)(&sock_addr_), sizeof(sock_addr_) ) )
+	if ( 0 != ::connect(sock, (sockaddr*)(&sock_addr_), sizeof(sock_addr_) ) )
 	{
 		closesocket(sock);
 		return INVALID_SOCKET;
 	}
 
-	if ( 0 != listen(sock, 5))
-	{
-		closesocket(sock);
-		return INVALID_SOCKET;
-	}
 	return sock;
 }
 

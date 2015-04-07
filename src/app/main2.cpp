@@ -3,7 +3,7 @@
 #include "base/strtool.h"
 #include "net/codec.h"
 
-#include "rpc/zzrpc_broker.h"
+#include "rpc/zzrpc_service.h"
 
 
 #define _CRTDBG_MAP_ALLOC
@@ -59,7 +59,7 @@ public:
 		cout<<"phone send message to:"<<"10086"<<endl;
 
 		string str = "dfce";
-		
+
 	}
 
 	int m;
@@ -114,7 +114,7 @@ public:
 	virtual int handle_msg(msg_t& msg_, socket_ptr_t sock_)
 	{
 
-	    cout<<"client handle_msg:"<<endl;
+		cout<<"client handle_msg:"<<endl;
 
 		cout<<"cmd_id "<<msg_.cmd_id()<<endl;
 		cout<<"msg body "<<msg_.body.c_str()<<endl;
@@ -155,7 +155,7 @@ void test2()
 	std::string listen_host = "tcp://127.0.0.1:12345";
 	net_factory_t::listen(listen_host, &handler);
 
-	
+
 	char ch;
 	cin>>ch;
 	net_factory_t::global_data.stop();
@@ -169,7 +169,7 @@ void test3()
 
 	phone_t* phone = new android_phone_t;
 	(phone->*func_ptr)();
- 
+
 }
 
 void test4(int argc, char** argv)
@@ -216,7 +216,7 @@ void test5()
 	double c = 123e+12;
 
 	encoder_<<m<<zz<<str; 
- 
+
 	bin_decoder_t decoder_;
 
 	decoder_.init_decoder(encoder_.get_encoded_string());
@@ -264,17 +264,18 @@ void test6()
 void test7()
 {
 	msg_handler_impl handler;
-	std::string listen_host = "tcp://127.0.0.1:12345";
+	std::string mb_host = "tcp://127.0.0.1:12345";
+	std::string service_name = "DemoService";
 
-	zzrpc_master_broker_t broker(listen_host, &handler);
+	zzrpc_service_t service(service_name, mb_host, &handler);
 
-	if ( broker.start() == -1 )
+	if ( service.start() == -1 )
 	{
-		cout<<"broker.start() fail"<<endl;
+		cout<<"service.start() fail"<<endl;
 	}
 	else
 	{
-		cout<<"broker.start() ok."<<endl;
+		cout<<"service.start() ok."<<endl;
 		cout<<"press any key to exit."<<endl;
 	}
 

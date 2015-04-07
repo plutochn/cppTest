@@ -1,12 +1,13 @@
 #ifndef _common_socket_controller_h_
 #define _common_socket_controller_h_
 
+#include "base/zz_compile_opt.h"
 #include "net/socket_controller_i.h"
 #include "net/msg_handler_i.h"
 
 namespace zz {
 
-class common_socket_controller_t : public socket_controller_i
+class LIBRARY_API common_socket_controller_t : public socket_controller_i
 {
 public:
 	common_socket_controller_t(msg_handler_i* handler_):

@@ -1,6 +1,7 @@
 #ifndef _acceptor_i_h_
 #define _acceptor_i_h_
 
+#include "base/zz_compile_opt.h"
 #include "net/netbase.h"
 #include "concurrency/task_queue_i.h"
 
@@ -9,7 +10,7 @@ namespace zz {
 class	accept_channel_t;
 class   socket_client_t;
 
-class acceptor_i : public socket_i
+class LIBRARY_API acceptor_i : public socket_i
 {
 public:
 	acceptor_i(task_queue_pool_t* tqp_, io_demultiplexer_i* iocp_poll_):

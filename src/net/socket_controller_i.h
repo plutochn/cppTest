@@ -1,11 +1,12 @@
 #ifndef _socket_controller_i_h_
 #define _socket_controller_i_h_
 
+#include "base/zz_compile_opt.h"
 #include "net/netbase.h"
 
 namespace zz {
 
-class socket_controller_i
+class LIBRARY_API socket_controller_i
 {
 public:
 	virtual ~socket_controller_i(){}

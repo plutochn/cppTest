@@ -1,12 +1,13 @@
 #ifndef _iocp_impl_h_
 #define	_iocp_impl_h_
 
+#include "base/zz_compile_opt.h"
 #include "net/netbase.h"
 #include "concurrency/thread.h"
 
 namespace zz {
 
-class iocp_poll : public io_demultiplexer_i
+class LIBRARY_API iocp_poll : public io_demultiplexer_i
 {
 public:
 	enum completion_key

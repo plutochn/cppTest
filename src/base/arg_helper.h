@@ -1,13 +1,15 @@
 #ifndef _arg_helper_h_
 #define _arg_helper_h_
 
+#include "base/zz_compile_opt.h"
+
 #include <string>
 #include <map>
 using namespace std;
 
 namespace zz {
 
-class arg_helper_t
+class LIBRARY_API arg_helper_t
 {
 public:
 	typedef std::map<std::string /* Ñ¡Ïî */,std::string /* Öµ */> arg_tbl_t;

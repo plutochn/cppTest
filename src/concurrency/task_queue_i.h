@@ -4,13 +4,14 @@
 #include <list>
 using namespace std;
 
+#include "base/zz_compile_opt.h"
 #include "concurrency/mutex.h"
 
 namespace zz {
 
 class	thread_t;
 
-class task_impl_i
+class LIBRARY_API task_impl_i
 {
 public:
 	
@@ -18,7 +19,7 @@ public:
 	virtual task_impl_i* fork() = 0;
 };
 
-class task_t
+class LIBRARY_API task_t
 {
 public:
 	task_t():
@@ -257,7 +258,7 @@ struct task_binder
 
 };
 
-class task_queue_t
+class LIBRARY_API task_queue_t
 {
 public:
 	typedef list<task_t> task_list_t ;
@@ -343,7 +344,7 @@ private:
 /**
  * 任务队列池
  */
-class task_queue_pool_t
+class LIBRARY_API task_queue_pool_t
 {
 public:
 	/**

@@ -17,9 +17,6 @@
     <Filter Include="net">
       <UniqueIdentifier>{850a1774-3061-47bb-b5d7-0a47b57138c8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="app">
-      <UniqueIdentifier>{88943582-3053-4b2d-81da-0afdbecb1583}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include="LICENSE">
@@ -27,9 +24,6 @@
     </None>
     <None Include="README.md">
       <Filter>资源文件</Filter>
-    </None>
-    <None Include="src\app\test.py">
-      <Filter>app</Filter>
     </None>
   </ItemGroup>
   <ItemGroup>
@@ -66,13 +60,10 @@
     <ClCompile Include="src\net\socket_ops.cpp">
       <Filter>net</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\main.cpp">
-      <Filter>app</Filter>
-    </ClCompile>
-    <ClCompile Include="src\app\stdafx.cpp">
-      <Filter>app</Filter>
-    </ClCompile>
     <ClCompile Include="src\rpc\zzrpc_broker.cpp">
+      <Filter>rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="src\rpc\zzrpc_service.cpp">
       <Filter>rpc</Filter>
     </ClCompile>
   </ItemGroup>
@@ -155,12 +146,6 @@
     <ClInclude Include="src\net\socket_ops.h">
       <Filter>net</Filter>
     </ClInclude>
-    <ClInclude Include="src\app\stdafx.h">
-      <Filter>app</Filter>
-    </ClInclude>
-    <ClInclude Include="src\app\targetver.h">
-      <Filter>app</Filter>
-    </ClInclude>
     <ClInclude Include="src\rpc\zzrpc_base.h">
       <Filter>rpc</Filter>
     </ClInclude>
@@ -176,7 +161,7 @@
     <ClInclude Include="src\rpc\zzrpc_ops.h">
       <Filter>rpc</Filter>
     </ClInclude>
-    <ClInclude Include="src\rpc\zzrpc_server.h">
+    <ClInclude Include="src\rpc\zzrpc_service.h">
       <Filter>rpc</Filter>
     </ClInclude>
   </ItemGroup>

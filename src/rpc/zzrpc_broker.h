@@ -1,6 +1,7 @@
 #ifndef _zzrpc_broker_
 #define _zzrpc_broker_
 
+#include "base/zz_compile_opt.h"
 #include "rpc/zzrpc_base.h"
 #include "concurrency/thread.h"
 #include "concurrency/task_queue_i.h"
@@ -12,7 +13,7 @@ using namespace std;
 
 namespace zz {
 
-class zzrpc_broker_t : public zzrpc_base_t
+class LIBRARY_API zzrpc_broker_t : public zzrpc_base_t
 {
 public:
 	zzrpc_broker_t(string& host_, msg_handler_i* hook_handler_=NULL);
@@ -80,7 +81,7 @@ private:
 /*
  * zzrpc_master_broker
  */
-class zzrpc_master_broker_t : public zzrpc_broker_t
+class LIBRARY_API zzrpc_master_broker_t : public zzrpc_broker_t
 {
 public:
 	struct session_ctx_t

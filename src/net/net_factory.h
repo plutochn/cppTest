@@ -1,9 +1,11 @@
 #ifndef _net_factory_h_
 #define _net_factory_h_
 
+#include "base/zz_compile_opt.h"
 #include "net/socket_ops.h"
 #include "net/acceptor_i.h"
 #include "net/socket_client.h"
+#include "net/connector.h"
 #include "concurrency/task_queue_i.h"
 #include "net/iocp_impl.h"
 #include "concurrency/thread.h"
@@ -12,7 +14,7 @@
 
 namespace zz {
 
-class net_factory_t
+class LIBRARY_API net_factory_t
 {
 public:
 	struct socket_mgr_t
@@ -192,6 +194,7 @@ public:
 	static global_data_t global_data;
 
 	static acceptor_i* listen(string& host_, msg_handler_i* handler_);
+	static connector_t* connect(string& host_, msg_handler_i* handler_);
 };
 
 }// namespace zz

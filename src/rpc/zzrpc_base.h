@@ -1,6 +1,7 @@
 #ifndef _zzrpc_base_h_
 #define _zzrpc_base_h_
 
+#include "base/zz_compile_opt.h"
 #include "net/codec.h"
 #include "net/msg_handler_i.h"
 #include "rpc/zzrpc_ops.h"
@@ -28,7 +29,8 @@ enum rpc_node_type
 
 enum rpc_cmd_e
 {
-	k_rpc_reg_delegator_server =			10,
+	k_rpc_reg_delegator_service =			10,
+	k_rpc_reg_delegator_service_ret,		/*  11 */
 	k_rpc_reg_delegator_client,			/*  12 */
 	k_rpc_reg_master_broker,			/*  13 */				
 	k_rpc_reg_slave_broker,				/*  14 */
@@ -189,7 +191,7 @@ protected:
 // msg define end.
 //------------------------------------
 
-class zzrpc_base_t : public msg_handler_i
+class LIBRARY_API zzrpc_base_t : public msg_handler_i
 {
 public:
 	zzrpc_base_t(msg_handler_i* hook_handler_=NULL):

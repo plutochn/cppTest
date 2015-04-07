@@ -1,6 +1,7 @@
 #ifndef _socket_ops_h_
 #define _socket_ops_h_
 
+#include "base/zz_compile_opt.h"
 #include "net/netbase.h"
 
 namespace zz {
@@ -9,7 +10,7 @@ namespace zz {
 #	define __in_out
 #endif
 
-struct  socket_ops_t
+struct  LIBRARY_API socket_ops_t
 {
 public:
 	/**

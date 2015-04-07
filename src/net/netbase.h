@@ -10,6 +10,8 @@
   typedef HANDLE fd_iocp_t;
 # endif
 
+#include "base/zz_compile_opt.h"
+
 #include <string>
 
 namespace zz {
@@ -92,7 +94,7 @@ private:
 
 typedef socket_client_i* socket_ptr_t;
 
-class io_demultiplexer_i
+class LIBRARY_API io_demultiplexer_i
 {
 public:
 	virtual int event_loop() = 0;

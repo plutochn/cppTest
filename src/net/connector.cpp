@@ -43,16 +43,16 @@ int connector_t::connect(string& host_)
 		return  ret;
 	}
 
-	m_tq = m_tqp->random_alloc(m_sock_fd);
-
 	cout<<"<connector>连接主机:"<<addr.c_str()<<":"<<port<<endl;
+
+	on_connect_complete();
 
 	return ret;
 }
 
 void connector_t::close()
 {
-	 m_socket_client->close();
+	 closesocket(m_sock_fd);
 }
 
 socket_client_t* connector_t::create(int new_fd)
@@ -60,37 +60,22 @@ socket_client_t* connector_t::create(int new_fd)
 	return new socket_client_t(m_tqp->random_alloc(new_fd), new_fd, new common_socket_controller_t(m_msg_handler));
 }
 
-/*
-int connector_t::accept_impl(fd_socket_t client_fd)
+int connector_t::on_connect_complete()
 {
-	m_io_channel.dec_pending_req_num();
-
-	int ret = 0;
-
-	const char * zz =  (char*)&m_listen_sock;
-	ret = setsockopt(client_fd, 
-		SOL_SOCKET, 
-		SO_UPDATE_ACCEPT_CONTEXT, 
-		(char*)&m_listen_sock, sizeof(m_listen_sock));
-	
-	if (0 != ret )
-	{
-		ret = WSAGetLastError();
-		return ret;
-	}
+	m_socket_client = create(m_sock_fd);
 
 	sockaddr_in sa_local = {0};
 	sockaddr_in sa_remote = {0};
 	int len = sizeof(sockaddr_in);
 
-	ret = getsockname(client_fd, (sockaddr*)&sa_local, &len);
+	int ret = getsockname(m_sock_fd, (sockaddr*)&sa_local, &len);
 	if (0 != ret)
 	{
 		ret = WSAGetLastError();
 		return ret;
 	}
 
-	ret = getpeername(client_fd, (sockaddr*)&sa_remote, &len);
+	ret = getpeername(m_sock_fd, (sockaddr*)&sa_remote, &len);
 	if (0 != ret)
 	{
 		ret = WSAGetLastError();
@@ -104,14 +89,11 @@ int connector_t::accept_impl(fd_socket_t client_fd)
 	addr_.remote_addr = inet_ntoa(sa_remote.sin_addr);
 	addr_.remote_port = ntohs(sa_remote.sin_port);
 
-	socket_client_t* client = create(client_fd);
+	socket_client_t* client = create(m_sock_fd);
 
 	client->on_open(m_iocp_poll,addr_);
 
-	m_io_channel.post_accept_req(this);
-
 	return ret;
-}*/
-
+}
 
 }// namespace zz
