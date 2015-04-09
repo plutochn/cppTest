@@ -98,9 +98,7 @@ int zzrpc_service_t::handle_reg_svr_to_mb_ret(msg_reg_svr_to_mb_ret& msg_, socke
 
 int zzrpc_service_t::handle_broken(socket_ptr_t sock_)
 {
-	session_ctx_t* ctx = sock_->get_ctx<session_ctx_t>();
-
-	delete ctx;
+	
 
 	zzrpc_base_t::handle_broken(sock_);
 
@@ -110,10 +108,6 @@ int zzrpc_service_t::handle_broken(socket_ptr_t sock_)
 int zzrpc_service_t::handle_open(socket_ptr_t sock_)
 {
 	zzrpc_base_t::handle_open(sock_);
-
-	session_ctx_t* ctx = new session_ctx_t;
-
-	sock_->set_ctx(ctx);
 
 	return 0;
 }

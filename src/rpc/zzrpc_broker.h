@@ -2,6 +2,7 @@
 #define _zzrpc_broker_
 
 #include "base/zz_compile_opt.h"
+#include "net/connector.h"
 #include "rpc/zzrpc_base.h"
 #include "concurrency/thread.h"
 #include "concurrency/task_queue_i.h"
@@ -84,17 +85,6 @@ private:
 class LIBRARY_API zzrpc_master_broker_t : public zzrpc_broker_t
 {
 public:
-	struct session_ctx_t
-	{
-		session_ctx_t():
-			node_id(invalid_node_id),
-			node_type(k_rpc_node_invalid)
-		{}
-		uint32_t	node_id;
-		int			node_type;
-	};
-
-public:
 	zzrpc_master_broker_t(string& host_, msg_handler_i* hook_handler_=NULL);
 
 	int handle_rpc_svr_reg(msg_reg_svr_to_mb&, socket_ptr_t);
@@ -118,6 +108,33 @@ private:
 	string					m_bridge_broker_host;
 };
 
-}
+/*
+ * zzrpc_slave_broker
+ */
+class LIBRARY_API zzrpc_slave_broker_t : public zzrpc_broker_t
+{
+public:
+	zzrpc_slave_broker_t(string& listen_host_, string& mb_host_, msg_handler_i* hook_handler_=NULL);
+
+	int handle_rpc_svr_reg(msg_reg_svr_to_sb&, socket_ptr_t);
+
+	virtual int handle_broken(socket_ptr_t sock_);
+	virtual int handle_open(socket_ptr_t sock_);
+
+	virtual int bind_callback_with_cmd() ;
+
+protected:
+	int handle_rpc_svr_reg_impl(msg_reg_svr_to_sb&, socket_ptr_t);
+
+private:
+	connector_t*			m_mb_connector;
+	string					m_master_broker_host;
+
+	map<string, uint32_t>	m_svr_name_to_node_id;
+
+	uint32_t				m_node_id;
+};
+
+}// namespace zz end
 
 #endif //_zzrpc_broker_
