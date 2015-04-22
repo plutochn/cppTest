@@ -148,6 +148,10 @@ int	zzrpc_service_t::handle_reg_svr_to_mb_ret_impl(msg_reg_svr_to_mb_ret& msg_, 
 int zzrpc_service_t::handle_broken(socket_ptr_t sock_)
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+	
+>>>>>>> 7f2582917344b36eb407ad273b74a1b249fc23b0
 =======
 	
 >>>>>>> 7f2582917344b36eb407ad273b74a1b249fc23b0

@@ -267,7 +267,10 @@ public:
 
 		delete ctx;
 <<<<<<< HEAD
+<<<<<<< HEAD
 		sock_->set_ctx(NULL);
+=======
+>>>>>>> 7f2582917344b36eb407ad273b74a1b249fc23b0
 =======
 >>>>>>> 7f2582917344b36eb407ad273b74a1b249fc23b0
 
