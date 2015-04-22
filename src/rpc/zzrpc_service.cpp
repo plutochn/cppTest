@@ -17,6 +17,20 @@ zzrpc_service_t::zzrpc_service_t(string& service_name, string& host_, msg_handle
 	m_node_id = invalid_node_id;
 }
 
+int zzrpc_service_t::call(string& group_name, string& service_name,string& interface_name,msg_i& in_msg)
+{
+	msg_rpc_route msg_;
+	msg_.m_caller_id = m_node_id;
+	msg_.m_group_name = group_name;
+	msg_.m_service_name = service_name;
+	msg_.m_interface_name = interface_name;
+	msg_.m_msg_body = in_msg.encode();
+
+	msg_send_tool_t::send(msg_, k_rpc_route_msg, m_mb_connector->get_sock()); 
+
+	return 0;
+}
+
 int zzrpc_service_t::handle_msg(msg_t& msg_, socket_ptr_t sock_)
 {
 	return zzrpc_base_t::handle_msg(msg_, sock_);
@@ -140,22 +154,26 @@ int	zzrpc_service_t::handle_reg_svr_to_mb_ret_impl(msg_reg_svr_to_mb_ret& msg_, 
 	m_node_id = msg_.m_svr_node_id_allcated;
 	m_sb_idx = msg_.m_bind_slave_broker_idx;
 
+	m_slave_broker_host_vec = msg_.m_slave_broker_host_vec;
+
 	connect_slave_brokers();
 
 	return 0;
 }
 
+int	zzrpc_service_t::handle_rpc_route_msg(msg_rpc_route& msg_, socket_ptr_t sock_)
+{
+	m_tq.produce(task_binder::bind(&zzrpc_service_t::handle_rpc_route_msg_impl,msg_,sock_,this));
+	return 0;
+}
+
+int	zzrpc_service_t::handle_rpc_route_msg_impl(msg_rpc_route& msg_, socket_ptr_t sock_)
+{
+	return 0;
+}
+
 int zzrpc_service_t::handle_broken(socket_ptr_t sock_)
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-	
->>>>>>> 7f2582917344b36eb407ad273b74a1b249fc23b0
-=======
-	
->>>>>>> 7f2582917344b36eb407ad273b74a1b249fc23b0
-
 	zzrpc_base_t::handle_broken(sock_);
 
 	return 0;
@@ -171,7 +189,8 @@ int zzrpc_service_t::handle_open(socket_ptr_t sock_)
 int zzrpc_service_t::bind_callback_with_cmd()
 {
 	m_slot_interface.add(k_rpc_reg_delegator_service_ret,zzrpc_ops_t::gen_callback(&zzrpc_service_t::handle_reg_svr_to_mb_ret, this));
+	m_slot_interface.add(k_rpc_route_msg,zzrpc_ops_t::gen_callback(&zzrpc_service_t::handle_rpc_route_msg, this));
 	return 0;
 }
 
-}// namespace zz
+}// namespace zz k_rpc_route_msg

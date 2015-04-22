@@ -117,6 +117,7 @@ public:
 	zzrpc_slave_broker_t(string& listen_host_, string& mb_host_, msg_handler_i* hook_handler_=NULL);
 
 	int handle_rpc_svr_reg(msg_reg_svr_to_sb&, socket_ptr_t);
+	int handle_rpc_route_msg(msg_reg_svr_to_sb&, socket_ptr_t);
 
 	virtual int handle_broken(socket_ptr_t sock_);
 	virtual int handle_open(socket_ptr_t sock_);

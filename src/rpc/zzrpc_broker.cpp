@@ -76,17 +76,12 @@ int zzrpc_master_broker_t::handle_rpc_svr_reg(msg_reg_svr_to_mb& msg_, socket_pt
 
 int zzrpc_master_broker_t::handle_rpc_svr_reg_impl(msg_reg_svr_to_mb& msg_, socket_ptr_t sock_)
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
+ 
 #ifdef _DEBUG
 	cout<<"zzrpc_master_broker_t::handle_rpc_svr_reg_impl called!"<<endl;
 	cout<<msg_.m_service_name<<endl;
 #endif
-
-=======
->>>>>>> 7f2582917344b36eb407ad273b74a1b249fc23b0
-=======
->>>>>>> 7f2582917344b36eb407ad273b74a1b249fc23b0
+	 
 	session_ctx_t* ctx = sock_->get_ctx<session_ctx_t>();
 
 	assert(NULL != ctx);

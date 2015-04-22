@@ -34,8 +34,7 @@ enum rpc_cmd_e
 	k_rpc_reg_delegator_client,			/*  12 */
 	k_rpc_reg_master_broker,			/*  13 */				
 	k_rpc_reg_slave_broker,				/*  14 */
-	k_rpc_reg_interface,				/*  15 */
-	k_rpc_route_msg						/*  16 */
+	k_rpc_route_msg						/*  15 */
 };
 
 //------------------------------------
@@ -193,21 +192,36 @@ class msg_rpc_route : public msg_i
 public:
 	  string		m_group_name;
 	  string		m_service_name;
+	  /*
+	   * m_interface_name empty时表示回调.
+	   */
 	  string		m_interface_name;
 	  string		m_msg_body;
+	  
+	  uint32_t		m_caller_id;
+	  uint32_t		m_callback_id;
 
 protected:
 	virtual void _encode()
 	{
-		m_encoder<<m_group_name<<m_service_name<<m_interface_name<<m_msg_body;
+		m_encoder<<m_group_name<<m_service_name<<m_interface_name<<m_msg_body<<m_caller_id<<m_callback_id;
 	}
 
 	virtual void _decode()
 	{
-		m_decoder>>m_group_name>>m_service_name>>m_interface_name>>m_msg_body;
+		m_decoder>>m_group_name>>m_service_name>>m_interface_name>>m_msg_body>>m_caller_id>>m_callback_id;
 	}
 };
 
+template<typename T>
+struct zzrpc_msg_t
+{
+	/*
+	 * typename表明 T::in_t是类型.
+	 */
+	typename typedef T::in_t in_t;
+	typename typedef T::out_t out_t;
+};
 //------------------------------------
 // msg define end.
 //------------------------------------
@@ -218,11 +232,11 @@ public:
 	struct session_ctx_t
 	{
 		session_ctx_t():
-	node_id(invalid_node_id),
-		node_type(k_rpc_node_invalid)
-	{}
-	uint32_t	node_id;
-	int			node_type;
+			node_id(invalid_node_id),
+			node_type(k_rpc_node_invalid)
+		{}
+		uint32_t	node_id;
+		int			node_type;
 	};
 
 public:
@@ -266,14 +280,9 @@ public:
 		session_ctx_t* ctx = sock_->get_ctx<session_ctx_t>();
 
 		delete ctx;
-<<<<<<< HEAD
-<<<<<<< HEAD
+  
 		sock_->set_ctx(NULL);
-=======
->>>>>>> 7f2582917344b36eb407ad273b74a1b249fc23b0
-=======
->>>>>>> 7f2582917344b36eb407ad273b74a1b249fc23b0
-
+ 
 		return 0;
 	}
 

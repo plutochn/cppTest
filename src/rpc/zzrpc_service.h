@@ -32,6 +32,11 @@ public:
 public:
 	zzrpc_service_t(string& service_name, string& mb_host_, msg_handler_i* hook_handler_=NULL);
 
+	/*
+	 * 调用远程接口.
+	 */
+	int call(string& group_name, string& service_name,string& interface_name,msg_i& in_msg);
+
 	virtual int handle_msg(msg_t& msg_, socket_ptr_t sock_);
 	virtual int handle_broken(socket_ptr_t sock_);
 	virtual int handle_open(socket_ptr_t sock_);
@@ -42,14 +47,17 @@ public:
 	virtual int bind_callback_with_cmd();
 
 	int	handle_reg_svr_to_mb_ret(msg_reg_svr_to_mb_ret& msg_, socket_ptr_t sock_);
+	int	handle_rpc_route_msg(msg_rpc_route& msg_, socket_ptr_t sock_);
 
 	int connect_master_broker();
 	int connect_slave_brokers();
 
 protected:
 	int	handle_reg_svr_to_mb_ret_impl(msg_reg_svr_to_mb_ret& msg_, socket_ptr_t sock_);
+	int	handle_rpc_route_msg_impl(msg_rpc_route& msg_, socket_ptr_t sock_);
 
 	connector_t* __connect_slave_broker(string& sb_host);
+
 protected:
 	connector_t*			m_mb_connector;
 	vector<connector_t*>	m_sb_connector;
