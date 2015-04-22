@@ -73,6 +73,20 @@ public:
 class socket_client_i : public socket_i
 {
 public:
+	socket_client_i():
+		m_ctx(NULL)
+	{
+
+	}
+	
+	virtual ~socket_client_i()
+	{
+		if (NULL != m_ctx)
+		{
+			delete m_ctx;
+		}
+	}
+
 	virtual sock_connection_info& connection_info() = 0;
 
 	template<typename T>

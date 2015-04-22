@@ -32,15 +32,6 @@ int zzrpc_broker_t::handle_open(socket_ptr_t sock_)
 	return 0;
 }
 
-//int test_handle_rpc_client_reg(msg_reg_svr_to_mb& msg_, socket_ptr_t sock_)
-//{
-//	cout<<"test_handle_rpc_client_reg begin"<<endl;
-//	cout<<msg_.m_service_name<<endl;
-//	cout<<"test_handle_rpc_client_reg end"<<endl;
-//
-//	return 0;
-//}
-
 int	zzrpc_broker_t::start()
 {
 	
@@ -79,19 +70,26 @@ zzrpc_master_broker_t::zzrpc_master_broker_t(string& host_, msg_handler_i* hook_
 
 int zzrpc_master_broker_t::handle_rpc_svr_reg(msg_reg_svr_to_mb& msg_, socket_ptr_t sock_)
 {
-
-#ifdef _DEBUG
-	cout<<"zzrpc_master_broker_t::handle_rpc_svr_reg called!"<<endl;
-	cout<<msg_.m_service_name<<endl;
-#endif
-
 	m_tq.produce(task_binder::bind(&zzrpc_master_broker_t::handle_rpc_svr_reg_impl,msg_,sock_,this));
 	return 0;
 }
 
 int zzrpc_master_broker_t::handle_rpc_svr_reg_impl(msg_reg_svr_to_mb& msg_, socket_ptr_t sock_)
 {
+<<<<<<< HEAD
+#ifdef _DEBUG
+	cout<<"zzrpc_master_broker_t::handle_rpc_svr_reg_impl called!"<<endl;
+	cout<<msg_.m_service_name<<endl;
+#endif
+
+=======
+>>>>>>> 7f2582917344b36eb407ad273b74a1b249fc23b0
+	session_ctx_t* ctx = sock_->get_ctx<session_ctx_t>();
+
+	assert(NULL != ctx);
+
 	uint32_t new_node_id = m_id_alloctor.alloc_id();
+
 	m_svr_name_to_node_id[msg_.m_service_name] = new_node_id;
 
 	msg_reg_svr_to_mb_ret msg_ret_;
@@ -106,6 +104,9 @@ int zzrpc_master_broker_t::handle_rpc_svr_reg_impl(msg_reg_svr_to_mb& msg_, sock
 	}
 
 	msg_send_tool_t::send(msg_ret_, k_rpc_reg_delegator_service_ret, sock_);
+
+	ctx->node_id = new_node_id;
+	ctx->node_type = k_rpc_node_delegator_service;
 
 	return 0;
 }
@@ -123,10 +124,7 @@ int zzrpc_master_broker_t::handle_rpc_client_reg(msg_reg_client_to_mb& msg_, soc
 
 int zzrpc_master_broker_t::handle_broken(socket_ptr_t sock_)
 {
-	session_ctx_t* ctx = sock_->get_ctx<session_ctx_t>();
-
-	delete ctx;
-
+ 
 	zzrpc_broker_t::handle_broken(sock_);
 
 	return 0;
@@ -135,10 +133,6 @@ int zzrpc_master_broker_t::handle_broken(socket_ptr_t sock_)
 int zzrpc_master_broker_t::handle_open(socket_ptr_t sock_)
 {
 	zzrpc_broker_t::handle_open(sock_);
-
-	session_ctx_t* ctx = new session_ctx_t;
-
-	sock_->set_ctx(ctx);
 
 	return 0;
 }
@@ -149,6 +143,34 @@ int zzrpc_master_broker_t::bind_callback_with_cmd()
 	m_slot_interface.add(k_rpc_reg_delegator_client,zzrpc_ops_t::gen_callback(&zzrpc_master_broker_t::handle_rpc_client_reg, this));
 
 	return 0;
+}
+
+/*
+ * zzrpc_slave_broker
+ */
+zzrpc_slave_broker_t::zzrpc_slave_broker_t(string& listen_host_, string& mb_host_, msg_handler_i* hook_handler_):
+	zzrpc_broker_t(listen_host_, hook_handler_),
+	m_master_broker_host(mb_host_)
+{
+}
+
+//
+//int handle_rpc_svr_reg(msg_reg_svr_to_mb&, socket_ptr_t);
+//int handle_rpc_client_reg(msg_reg_client_to_mb&, socket_ptr_t);
+
+int zzrpc_slave_broker_t::handle_broken(socket_ptr_t sock_)
+{
+	return 0 ;
+}
+
+int zzrpc_slave_broker_t::handle_open(socket_ptr_t sock_)
+{
+	return 0 ;
+}
+
+int zzrpc_slave_broker_t::bind_callback_with_cmd() 
+{
+	return 0 ;
 }
 
 }// namespace zz end

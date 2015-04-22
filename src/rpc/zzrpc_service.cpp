@@ -11,7 +11,8 @@ zzrpc_service_t::zzrpc_service_t(string& service_name, string& host_, msg_handle
 	zzrpc_base_t(hook_handler_),
 	m_service_name(service_name),
 	m_mb_host(host_),
-	m_mb_connector(NULL)
+	m_mb_connector(NULL),
+	m_status(rpc_service_status_e::stopped)
 {
 	m_node_id = invalid_node_id;
 }
@@ -25,26 +26,40 @@ int	zzrpc_service_t::start()
 {
 	int ret = 0;
 
-	bind_callback_with_cmd();
-
-	ret = connect_master_broker();
-
-	if (0 != ret)
+	try
 	{
-		cout<<"[zzrpc_service_t::start] connect to mb fail!"<<endl;
-		return ret;
+		bind_callback_with_cmd();
+
+		/* 进入正在启动状态 */
+		m_status = rpc_service_status_e::starting;
+
+		m_thread.create(task_binder::bind(&task_queue_t::consume,&m_tq),1);
+
+		ret = connect_master_broker();
+
+		if (0 != ret)
+		{
+			cout<<"[zzrpc_service_t::start] connect to mb fail!"<<endl;
+			throw ret;
+		}
+
+		while (rpc_service_status_e::starting == m_status)
+		{
+			Sleep(250);
+		}
+
+		if (invalid_node_id == m_node_id)
+		{
+			ret = -1;
+			throw ret;
+		} 
+
 	}
-
-	m_thread.create(task_binder::bind(&task_queue_t::consume,&m_tq),1);
-
-	while (invalid_node_id == m_node_id)
+	catch(int)
 	{
-		Sleep(1000);
+		m_status = rpc_service_status_e::stopped;
 	}
-
-	ret = connect_slave_broker();
-
-	return 0;
+	return ret;
 }
 
 int zzrpc_service_t::connect_master_broker()
@@ -65,9 +80,35 @@ int zzrpc_service_t::connect_master_broker()
 	return ret;
 }
 
-int zzrpc_service_t::connect_slave_broker()
+connector_t* zzrpc_service_t::__connect_slave_broker(string& sb_host)
+{
+	connector_t* sb_connect = net_factory_t::connect(sb_host, this);
+
+	if (NULL == sb_connect)
+	{
+		cout<<"connect sb["<<sb_host.c_str()<<"] fail!"<<endl;
+		return NULL;
+	}
+
+	msg_reg_svr_to_sb msg_;
+	msg_.m_service_name = m_service_name;
+	msg_.m_svr_node_id = m_node_id;
+	
+	msg_send_tool_t::send(msg_, k_rpc_reg_delegator_service, sb_connect->get_sock());
+
+	return sb_connect ;
+}
+
+int zzrpc_service_t::connect_slave_brokers()
 {
 	int ret = 0;
+
+	for (size_t i = 0; i<m_slave_broker_host_vec.size(); i++)
+	{
+		string sb_host = m_slave_broker_host_vec[i];
+
+		__connect_slave_broker(sb_host);
+	}
 	return ret;
 }
 
@@ -84,23 +125,32 @@ void zzrpc_service_t::stop()
 
 int zzrpc_service_t::handle_reg_svr_to_mb_ret(msg_reg_svr_to_mb_ret& msg_, socket_ptr_t sock_) 
 {
+	m_tq.produce(task_binder::bind(&zzrpc_service_t::handle_reg_svr_to_mb_ret_impl,msg_,sock_,this));
 
+	return 0;
+}
+
+int	zzrpc_service_t::handle_reg_svr_to_mb_ret_impl(msg_reg_svr_to_mb_ret& msg_, socket_ptr_t sock_)
+{
 #ifdef _DEBUG
-	cout<<"zzrpc_service_t::handle_reg_svr_to_mb_ret called!"<<endl;
+	cout<<"zzrpc_service_t::handle_reg_svr_to_mb_ret_impl called!"<<endl;
 #endif
 	cout<<"sb_idx:"<<msg_.m_bind_slave_broker_idx<<"node_id:"<<msg_.m_svr_node_id_allcated<<endl;
 
 	m_node_id = msg_.m_svr_node_id_allcated;
 	m_sb_idx = msg_.m_bind_slave_broker_idx;
 
+	connect_slave_brokers();
+
 	return 0;
 }
 
 int zzrpc_service_t::handle_broken(socket_ptr_t sock_)
 {
-	session_ctx_t* ctx = sock_->get_ctx<session_ctx_t>();
-
-	delete ctx;
+<<<<<<< HEAD
+=======
+	
+>>>>>>> 7f2582917344b36eb407ad273b74a1b249fc23b0
 
 	zzrpc_base_t::handle_broken(sock_);
 
@@ -110,10 +160,6 @@ int zzrpc_service_t::handle_broken(socket_ptr_t sock_)
 int zzrpc_service_t::handle_open(socket_ptr_t sock_)
 {
 	zzrpc_base_t::handle_open(sock_);
-
-	session_ctx_t* ctx = new session_ctx_t;
-
-	sock_->set_ctx(ctx);
 
 	return 0;
 }

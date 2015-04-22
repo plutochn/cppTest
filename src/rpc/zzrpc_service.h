@@ -11,6 +11,14 @@ namespace zz {
 class LIBRARY_API zzrpc_service_t : public zzrpc_base_t
 {
 public:
+	enum rpc_service_status_e
+	{
+		stopped= 0,	/* 停止     */
+		starting,	/* 正在启动 */
+		running		/* 正在运行 */
+	};
+
+public:
 	struct session_ctx_t
 	{
 		session_ctx_t():
@@ -36,12 +44,24 @@ public:
 	int	handle_reg_svr_to_mb_ret(msg_reg_svr_to_mb_ret& msg_, socket_ptr_t sock_);
 
 	int connect_master_broker();
-	int connect_slave_broker();
+	int connect_slave_brokers();
 
+protected:
+	int	handle_reg_svr_to_mb_ret_impl(msg_reg_svr_to_mb_ret& msg_, socket_ptr_t sock_);
+
+	connector_t* __connect_slave_broker(string& sb_host);
 protected:
 	connector_t*			m_mb_connector;
 	vector<connector_t*>	m_sb_connector;
+
+	/*
+	 * Bind Slave Broker 在m_slave_broker_host_vec中的索引.
+	 */
 	uint32_t				m_sb_idx;
+	/*
+	 *  Slave Broker 地址列表. 由Master Broker发送到Service.
+	 */
+	vector<string>			m_slave_broker_host_vec;
 
 	thread_t				m_thread;
 	task_queue_t			m_tq;
@@ -49,7 +69,12 @@ protected:
 
 private:
 	string					m_service_name;
+	/*
+	 * Master Broker分配的节点ID.
+	 */
 	uint32_t				m_node_id;
+
+	rpc_service_status_e	m_status;
 };
 
 }// namespace zz end
